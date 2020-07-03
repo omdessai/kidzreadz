@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>527762745562-1cjf6c0le4m9u68ckqu8quhc8ld3cdk2.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.527762745562-1cjf6c0le4m9u68ckqu8quhc8ld3cdk2</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAiDtHrE8syHethUYrwbTPxkcegkYcXu6E</string>
+	<key>GCM_SENDER_ID</key>
+	<string>527762745562</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.zerogravitykidz.kidzreadz</string>
+	<key>PROJECT_ID</key>
+	<string>kidzreadz</string>
+	<key>STORAGE_BUCKET</key>
+	<string>kidzreadz.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:527762745562:ios:c42e83ab433c0a42609de3</string>
+	<key>DATABASE_URL</key>
+	<string>https://kidzreadz.firebaseio.com</string>
+</dict>
+</plist>
