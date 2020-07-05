@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {RNCamera} from 'react-native-camera';
 
+import Sound from 'react-native-sound';
+
 import {Webster} from './services/webster';
 
 
@@ -96,7 +98,6 @@ const App: () => React$Node = () => {
   const [word, setWord] = useState("");
   const [meaning, setMeaning] = useState("");
 
-
     getMeaning = async () =>  {
     wordRepition++;
     if(wordRepition < 5 || prevWord != word){
@@ -110,6 +111,15 @@ const App: () => React$Node = () => {
     dictionary = new Webster();
     a =  await dictionary.lookup(word_id);
       console.log(JSON.stringify(a));
+
+      sound = new Sound(a.audio, null, (error) => {
+        if (error) {
+          // do something
+        }
+        
+        // play when loaded
+        sound.play();
+      });
 
     setMeaning(a.meaning);
     
