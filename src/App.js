@@ -1,21 +1,8 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, Dimensions, TouchableOpacity} from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import RNTextDetector from 'react-native-text-detector';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {RNCamera} from 'react-native-camera';
 
-const deviceWidth = Dimensions.get('window').width;
-const deviceHeight = Dimensions.get('window').height;
-
-//oxford dictionary
-var od_app_id = "b0f9fd73"
-var od_app_key = "2d96750da5f085eeb1c96d6b27e47f08"
-var od_url = "https://od-api.oxforddictionaries.com:443/api/v2/entries/";
-
-
-//merriam-webster dictionary
-var mw_appkey = "9c3ac110-450d-4a0b-acd5-5c50301f977f";
-var mw_url = "https://dictionaryapi.com/api/v3/references/collegiate/json/";
+import {Webster} from './services/webster';
 
 
 const styles = StyleSheet.create({
@@ -110,63 +97,7 @@ const App: () => React$Node = () => {
   const [meaning, setMeaning] = useState("");
 
 
-  getMeaningFromOD = (word_id) =>{
-    language = "en-us";
-    url = od_url + language + "/" + word_id;
-    fetch(url, {
-           method: 'GET',
-           headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'app_id': od_app_id,
-            'app_key':  od_app_key
-          },
-        })
-        .then((response) => response.json())
-        .then((responseJson) => {
-          try{
-            var meaning = responseJson.results[0].lexicalEntries[0].entries[0].senses[0].shortDefinitions[0];
-           console.log(meaning);
-           setMeaning(meaning);
-  
-          } catch {
-  
-          }
-          
-        })
-        .catch((error) => {
-           console.error(error);
-        });
-  };
-
-  getMeaningFromMW = (word_id) =>{
-    url = mw_url + word_id + "?key=" + mw_appkey;
-    console.log(url);
-    fetch(url, {
-           method: 'GET',
-           headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-          },
-        })
-        .then((response) => response.json())
-        .then((responseJson) => {
-          try{
-            //var meaning = responseJson.results[0].lexicalEntries[0].entries[0].senses[0].shortDefinitions[0];
-           //console.log();
-           setMeaning(responseJson[0].shortdef[0]);
-  
-          } catch {
-  
-          }
-          
-        })
-        .catch((error) => {
-           console.error(error);
-        });
-  };
-
-   getMeaning = () => {
+    getMeaning = async () =>  {
     //setMeaning("Retrieving.....");
     wordRepition++;
     if(wordRepition < 5 || prevWord != word){
@@ -178,7 +109,13 @@ const App: () => React$Node = () => {
     wordRepition = 0;
     word_id = word;
     //return;
-    return getMeaningFromMW(word_id);
+    //return getMeaningFromMW(word_id);
+    dictionary = new Webster();
+    //return .meaning;
+    a =  await dictionary.lookup(word_id);
+      console.log(JSON.stringify(a));
+
+    setMeaning(a.meaning);
   };
 
   onTextRecognized = (blocks) => {
