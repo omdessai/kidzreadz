@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {RNCamera} from 'react-native-camera';
-
 import Sound from 'react-native-sound';
-
-import {Webster} from './services/webster';
+import {Webster} from './services/dictionaries/webster';
 
 
 const styles = StyleSheet.create({
