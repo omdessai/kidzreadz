@@ -13,9 +13,11 @@
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-camera": "^3.30.0",
+    "react-native-elements": "^2.0.4",
     "react-native-sound": "^0.11.0",
     "react-native-sqlite-storage": "^5.0.0",
-    "react-native-text-detector": "0.0.6"
+    "react-native-text-detector": "0.0.6",
+    "react-native-vector-icons": "^7.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

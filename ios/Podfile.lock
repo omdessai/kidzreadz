@@ -451,6 +451,8 @@ PODS:
   - RNTextDetector (0.0.6):
     - React
     - TesseractOCRiOS (~> 4.0.0)
+  - RNVectorIcons (7.0.0):
+    - React
   - TesseractOCRiOS (4.0.0)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -510,6 +512,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNSound (from `../node_modules/react-native-sound`)
   - RNTextDetector (from `../node_modules/react-native-text-detector/ios`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -606,6 +609,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-sound"
   RNTextDetector:
     :path: "../node_modules/react-native-text-detector/ios"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -670,6 +675,7 @@ SPEC CHECKSUMS:
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
   RNSound: c980916b596cc15c8dcd2f6ecd3b13c4881dbe20
   RNTextDetector: 3983fcecbd4a95ea4664d3269a62c1b14c3a712b
+  RNVectorIcons: da6fe858f5a65d7bbc3379540a889b0b12aa5976
   TesseractOCRiOS: 90638afbe43d082433f2e76b384c7901d23956df
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a

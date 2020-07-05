@@ -174,6 +174,7 @@ const App: () => React$Node = () => {
       <View style={styles.textContainer}>
       <Text style={styles.placeHolderText}>Word</Text>
       <Text style={styles.placeHolderText}>{word}</Text>
+
       </View>
 
       <View style={styles.meaningContainer}>
