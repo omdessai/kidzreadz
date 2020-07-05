@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import {RNCamera} from 'react-native-camera';
+import {StyleSheet, View, Text} from 'react-native';
 import Sound from 'react-native-sound';
+
 import {Webster} from './services/dictionaries/webster';
+import Scanner from './components/scanner';
 
 
 const styles = StyleSheet.create({
@@ -40,7 +41,6 @@ const styles = StyleSheet.create({
     flex:3,
     alignItems:'center'
   },
-  
   textContainer:{
     flex:1,
     flexDirection:'column',
@@ -63,23 +63,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'blue',
     borderRadius:5,
     marginHorizontal:20,
-  },
-  preview: {
-    flex:1,
-    margin:5,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-  },
-  rectangleColor: {
-    flex:1,
-    marginTop:120,
-    marginLeft:70,
-    position:'absolute',
-    height: 50,
-    width:200,
-    borderRadius:5,
-    borderWidth:3,
-    margin:10,
   },
   button: {
     alignItems: "center",
@@ -185,47 +168,12 @@ const App: () => React$Node = () => {
 
       <View style={styles.bodyColumnContainer}>
       <View style={styles.previewContainer}>
-      
-      
-      <RNCamera
-          ref={(ref) => {
-            this.camera = ref;
-          }}
-          style={styles.preview}
-          type={RNCamera.Constants.Type.back}
-          flashMode={RNCamera.Constants.FlashMode.off}
-          onTextRecognized = {this.onTextRecognized}
-          autoFocus = {RNCamera.Constants.AutoFocus.on}
-          
-          onGoogleVisionBarcodesDetected={({ barcodes }) => {
-          }}
-        >
-          
-
-{({ camera, status, recordAudioPermissionStatus }) => {
-            return (
-              
-              <View style={styles.preview}>
-                  <View style={styles.rectangleColor} >
-                  </View>
-
-          </View>
-            );
-          }}
-          </RNCamera>
-
-
+      <Scanner></Scanner>
       </View>
 
       <View style={styles.textContainer}>
       <Text style={styles.placeHolderText}>Word</Text>
       <Text style={styles.placeHolderText}>{word}</Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={this.getMeaning}
-      >
-        <Text>Get Definition</Text>
-      </TouchableOpacity>
       </View>
 
       <View style={styles.meaningContainer}>
