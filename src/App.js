@@ -98,7 +98,6 @@ const App: () => React$Node = () => {
 
 
     getMeaning = async () =>  {
-    //setMeaning("Retrieving.....");
     wordRepition++;
     if(wordRepition < 5 || prevWord != word){
       console.log(prevWord + " " + wordRepition);
@@ -108,30 +107,23 @@ const App: () => React$Node = () => {
 
     wordRepition = 0;
     word_id = word;
-    //return;
-    //return getMeaningFromMW(word_id);
     dictionary = new Webster();
-    //return .meaning;
     a =  await dictionary.lookup(word_id);
       console.log(JSON.stringify(a));
 
     setMeaning(a.meaning);
+    
   };
 
   onTextRecognized = (blocks) => {
     if(blocks.textBlocks.length >0){
-      //console.log("blocks identified");
       discovered = "total blocks :"+ blocks.textBlocks.length;
       discovered += "   block sizes: =>"
       wordList = [];
       
       blocks.textBlocks.forEach(item => {
-        //discovered += "=>\n"+ JSON.stringify(item.components);
         item.components.forEach(component => {
           component.components.forEach(comp => {
-            //discovered += "=>\n"+ JSON.stringify(comp);
-            //if(comp.type == "element"){
-              //discovered += "\n" + comp.value + " => " + JSON.stringify(comp.bounds.origin);
 
             if(comp.type == "element"){
               item = {word: comp.value, x: comp.bounds.origin.x,
@@ -168,16 +160,6 @@ const App: () => React$Node = () => {
         setWord(w);
         getMeaning();
       }
-      /*
-      for(blks in blocks.textBlocks){
-        console.log(blocks.textBlocks[blks]);
-        console.log(" =>" )
-        //if(blks.value)
-          discovered += "  " + blocks.textBlocks[blks].value.length;
-      }
-      setWords(discovered);
-      //console.log(blocks);
-      */
     }
   };
 
@@ -204,18 +186,15 @@ const App: () => React$Node = () => {
           style={styles.preview}
           type={RNCamera.Constants.Type.back}
           flashMode={RNCamera.Constants.FlashMode.off}
-          //zoom={.015}
           onTextRecognized = {this.onTextRecognized}
           autoFocus = {RNCamera.Constants.AutoFocus.on}
           
           onGoogleVisionBarcodesDetected={({ barcodes }) => {
-            //console.log(barcodes);
           }}
         >
           
 
 {({ camera, status, recordAudioPermissionStatus }) => {
-  //this.takePicture();
             return (
               
               <View style={styles.preview}>
