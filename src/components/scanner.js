@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable react-native/no-inline-styles */
 import {RNCamera} from 'react-native-camera';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -153,13 +153,11 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
 
   onTextRecognized = (blocks, scanType) => {
     if (blocks.textBlocks.length > 0) {
-      discovered = "total blocks :"+ blocks.textBlocks.length;
-      discovered += "   block sizes: =>"
       wordList = [];
       blocks.textBlocks.forEach(item => {
         item.components.forEach(component => {
           component.components.forEach(comp => {
-            if (comp.type == 'element') {
+            if (comp.type === 'element') {
               item = {
                 word: comp.value,
                 x: comp.bounds.origin.x,
