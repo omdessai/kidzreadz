@@ -1,7 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 
 import Scanner from './components/scanner';
+import WordList from './components/wordlist';
+
+import  {Books} from './services/store/books';
+import {Book} from './services/store/book';
+import globalHook from 'use-global-hook';
+ 
 
 const styles = StyleSheet.create({
   container: {
@@ -38,12 +44,42 @@ const styles = StyleSheet.create({
     flex: 5,
     backgroundColor: '#9fdf9f',
   },
-  bottomNav: {
-    backgroundColor: 'green',
-  },
 });
 
+
+const initialState = {
+  bookList: new Books(),
+  activeBook: {},
+};
+ 
+const actions = {
+  addBook: (store, book) => {
+    const bookList = store.state.bookList;
+    bookList.add(book);
+    store.setState({bookList: bookList, activeBook: book});
+  },
+
+  addWord: (store, word) => {
+    const bookList = store.state.bookList;
+    let bookFromList = bookList.getBook(store.state.activeBook.name);
+    if (bookFromList && bookFromList.addWord) {
+      bookFromList.addWord(word);
+      store.setState({bookList: bookList, activeBook: bookFromList});
+    }
+  }
+};
+ 
+const useGlobal = globalHook(React, initialState, actions);
+
 const App: () => React$Node = () => {
+  const [globalState, globalActions] = useGlobal();
+
+  /*
+  setTimeout(() => {
+    bookList.add(new Book('wonder1'));
+    this.setBookList(bookList);
+  }, 10000);
+  */
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -52,11 +88,18 @@ const App: () => React$Node = () => {
       <View style={styles.bodyContainer}>
         <View style={styles.previewContainer}>
           <Scanner
-            onTextSelected={text => {
+            onTextSelected={(text, isTitle) => {
+              console.log("Is title " + isTitle)
+              if (isTitle) {
+                globalActions.addBook(new Book(text));
+              } else {
+                globalActions.addWord(text);
+              }
             }}
           />
         </View>
         <View style={styles.wordListContainer} />
+        <WordList store={globalState} />
       </View>
       <View style={styles.footer}>
         <Text style={styles.footerTitle}>ZeroGravity Kidz</Text>

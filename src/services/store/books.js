@@ -10,6 +10,10 @@ class Books {
   async add(book) {
     this.bookList[book.name] = book;
   }
+
+  getBook(name){
+    return this.bookList[name];
+  }
 }
 
 module.exports = {
