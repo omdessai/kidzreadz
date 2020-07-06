@@ -178,13 +178,13 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
   [txtConfirmedState, settxtConfirmedState] = useState(false);
   [confirmedText, setconfirmedText] = useState('');
   [progressRepetionCount, setprogressRepetionCount] = useState(0);
+  [firstTextIdentified, setfirstTextIdentified] = useState(false);
 
   onBookTitleSelected = () => {
     textSelected(confirmedText);
   };
 
   onTextConfirmed = text => {
-    console.log(text + ' ' + prevText + ' ' + repetitionCount);
     if (text !== prevText) {
       setprogressRepetionCount(0);
       setconfirmedText('');
@@ -206,6 +206,7 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
   };
 
   onTextRecognized = (blocks, scanType) => {
+    setfirstTextIdentified(true);
     if (blocks.textBlocks.length > 0) {
       wordList = [];
       blocks.textBlocks.forEach(item => {
@@ -395,58 +396,60 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
                   )}
                 </View>
 
-                <View style={{height: 50, margin: 5}}>
-                  <View style={{flex: 1, marginBottom: 10}}>
-                    <Progress.Bar
-                      width={null}
-                      borderRadius={30}
-                      height={40}
-                      progress={progressRepetionCount}
-                      color="green"
-                    />
-                    <View
-                      style={{
-                        flex: 1,
-                        width: '100%',
-                        marginTop: 10,
-                        zIndex: 1,
-                        position: 'absolute',
-                        flexDirection: 'row',
-                      }}>
-                      <View style={{flex: 1, alignItems: 'center'}}>
-                        {scanItemType === scanItemTypes.word && (
-                          <Text style={styles.scannedText}>
-                            {confirmedText}
-                          </Text>
-                        )}
-                        {scanItemType === scanItemTypes.title && (
-                          <View style={{flexDirection: 'row'}}>
-                            <View>
-                              <TextInput style={styles.scannedText}>
-                                {confirmedText}
-                              </TextInput>
-                            </View>
-                            {txtConfirmedState && (
-                              <View style={{marginLeft: 20}}>
-                                <TouchableOpacity
-                                  style={{flex: 1}}
-                                  onPress={() => onBookTitleSelected()}>
-                                  <View>
-                                    <Ionicons
-                                      name="ios-add-circle"
-                                      size={25}
-                                      color={'white'}
-                                    />
-                                  </View>
-                                </TouchableOpacity>
+                {firstTextIdentified && (
+                  <View style={{height: 50, margin: 5}}>
+                    <View style={{flex: 1, marginBottom: 10}}>
+                      <Progress.Bar
+                        width={null}
+                        borderRadius={30}
+                        height={40}
+                        progress={progressRepetionCount}
+                        color="green"
+                      />
+                      <View
+                        style={{
+                          flex: 1,
+                          width: '100%',
+                          marginTop: 10,
+                          zIndex: 1,
+                          position: 'absolute',
+                          flexDirection: 'row',
+                        }}>
+                        <View style={{flex: 1, alignItems: 'center'}}>
+                          {scanItemType === scanItemTypes.word && (
+                            <Text style={styles.scannedText}>
+                              {confirmedText}
+                            </Text>
+                          )}
+                          {scanItemType === scanItemTypes.title && (
+                            <View style={{flexDirection: 'row'}}>
+                              <View>
+                                <TextInput style={styles.scannedText}>
+                                  {confirmedText}
+                                </TextInput>
                               </View>
-                            )}
-                          </View>
-                        )}
+                              {txtConfirmedState && (
+                                <View style={{marginLeft: 20}}>
+                                  <TouchableOpacity
+                                    style={{flex: 1}}
+                                    onPress={() => onBookTitleSelected()}>
+                                    <View>
+                                      <Ionicons
+                                        name="ios-add-circle"
+                                        size={25}
+                                        color={'white'}
+                                      />
+                                    </View>
+                                  </TouchableOpacity>
+                                </View>
+                              )}
+                            </View>
+                          )}
+                        </View>
                       </View>
                     </View>
                   </View>
-                </View>
+                )}
               </View>
             </View>
           );
