@@ -12,10 +12,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#424242',
   },
   header: {
-    paddingTop:20
+    paddingTop:20,
+    backgroundColor: 'green',
   },
   headerTitle:{
-    backgroundColor: '#424242',
     color:'#fff',
     textAlign:'center',
     padding:10,
@@ -40,33 +40,25 @@ const styles = StyleSheet.create({
   previewContainer:{
     flex:3,
   },
-  textContainer:{
-    flex:1,
-    flexDirection:'column',
-    backgroundColor: 'lightgreen',
-  },
   meaningContainer:{
-    flex:2,
+    flex:5,
     flexDirection:'column',
-    backgroundColor: 'grey',
+    backgroundColor: '#9fdf9f',
   },
   bottomNav:{
     backgroundColor: 'green',
   },
   bottomNavRow:{
     flexDirection: 'row',
+    alignItems:'center',
+    justifyContent:'center',
     margin:10
   },
-  bottomNavButton:{
-    flex:1,
-    backgroundColor: 'blue',
-    borderRadius:5,
-    marginHorizontal:20,
-  },
-  button: {
-    alignItems: "center",
-    backgroundColor: "#CDDCCC",
-    padding: 10
+  companyText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 22,
+    fontWeight: 'bold',
   },
 });
 
@@ -105,53 +97,6 @@ const App: () => React$Node = () => {
     
   };
 
-  onTextRecognized = (blocks) => {
-    if(blocks.textBlocks.length >0){
-      discovered = "total blocks :"+ blocks.textBlocks.length;
-      discovered += "   block sizes: =>"
-      wordList = [];
-      
-      blocks.textBlocks.forEach(item => {
-        item.components.forEach(component => {
-          component.components.forEach(comp => {
-
-            if(comp.type == "element"){
-              item = {word: comp.value, x: comp.bounds.origin.x,
-                  y: comp.bounds.origin.y, height: comp.bounds.size.height,
-                  weight: comp.bounds.size.weight};
-                  if(item.x > 110 && item.x < 170 && item.y > 120 && item.y < 160){
-                    wordList.push(item);
-                  }
-              }
-            }
-          );
-        });
-      });
-      wordOfInterest = wordList[0];
-      console.log(JSON.stringify(wordList));
-      if(wordList.length > 1){
-        tempWord = wordList[0];
-        for(idx in wordList){
-          if(idx == 0) continue;
-          if(wordList[idx].x > wordOfInterest.x) wordOfInterest = wordList[idx];
-          if(wordList[idx].y > wordOfInterest.y) wordOfInterest = wordList[idx];
-        }
-      }
-      if(wordOfInterest){
-        w = wordOfInterest.word.trim();
-        tokens = w.split(',');
-        if(tokens.length > 1){
-          w = tokens[0];
-        }
-        tokens = w.split('.');
-        if(tokens.length > 1){
-          w = tokens[0];
-        }
-        setWord(w);
-        getMeaning();
-      }
-    }
-  };
 
   return(
     <View style={styles.container}>
@@ -159,7 +104,7 @@ const App: () => React$Node = () => {
 
       <View style={styles.header}>
 
-      <Text style={styles.headerTitle}>Header</Text>
+      <Text style={styles.headerTitle}>KidzReadz</Text>
       </View>
 
 
@@ -167,17 +112,12 @@ const App: () => React$Node = () => {
 
       <View style={styles.bodyColumnContainer}>
       <View style={styles.previewContainer}>
-      <Scanner onTextSelected = {(text) => {console.log(text);}}></Scanner>
+      <Scanner onTextSelected = {(text) => {setWord(text);}}></Scanner>
       </View>
 
-      <View style={styles.textContainer}>
-      <Text style={styles.placeHolderText}>Word</Text>
-      <Text style={styles.placeHolderText}>{word}</Text>
-
-      </View>
 
       <View style={styles.meaningContainer}>
-      <Text style={styles.placeHolderText}>Definition</Text>
+      <Text style={styles.placeHolderText}></Text>
         <Text style={styles.placeHolderText}>{meaning}</Text>
       </View>
 
@@ -186,12 +126,7 @@ const App: () => React$Node = () => {
 
       <View style={styles.bottomNav}>
       <View style={styles.bottomNavRow}>
-        <View style={styles.bottomNavButton}>
-          <Text style={styles.placeHolderText}>Add Book</Text>
-        </View>
-        <View style={styles.bottomNavButton}>
-        <Text style={styles.placeHolderText}>Add Word</Text>
-        </View>
+      <Text style={styles.companyText}>ZeroGravity Kidz</Text>
         </View>
       </View>
 
