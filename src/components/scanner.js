@@ -83,6 +83,14 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     backgroundColor: 'green',
   },
+  unselectedIconHolders: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 40,
+    backgroundColor: 'grey',
+  },
   superIconContainer: {
     position: 'absolute',
     zIndex: 1,
@@ -299,12 +307,12 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
                       <TouchableOpacity
                         style={styles.button}
                         onPress={() => previewStopClicked()}>
-                        <View style={styles.iconHolders}>
+                        <View style={styles.unselectedIconHolders}>
                           <View style={styles.mainIconContainer}>
                             <FeatherIcons
                               name="camera-off"
                               size={iconProps.mainIcon.size}
-                              color={iconProps.mainIcon.color}
+                              color={'red'}
                             />
                           </View>
                         </View>
@@ -317,7 +325,12 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
                         onPress={() => {
                           setscanItemType(scanItemTypes.title);
                         }}>
-                        <View style={styles.iconHolders}>
+                        <View
+                          style={
+                            scanItemType === scanItemTypes.title
+                              ? styles.iconHolders
+                              : styles.unselectedIconHolders
+                          }>
                           <View style={styles.superIconContainer}>
                             <Icon
                               name="camera"
@@ -342,7 +355,12 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
                         onPress={() => {
                           setscanItemType(scanItemTypes.word);
                         }}>
-                        <View style={styles.iconHolders}>
+                        <View
+                          style={
+                            scanItemType === scanItemTypes.word
+                              ? styles.iconHolders
+                              : styles.unselectedIconHolders
+                          }>
                           <View style={styles.superIconContainer}>
                             <Icon
                               name="camera"
