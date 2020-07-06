@@ -179,13 +179,17 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
   [confirmedText, setconfirmedText] = useState('');
   [progressRepetionCount, setprogressRepetionCount] = useState(0);
 
+  onBookTitleSelected = () => {
+    textSelected(confirmedText);
+  };
+
   onTextConfirmed = text => {
     console.log(text + ' ' + prevText + ' ' + repetitionCount);
     if (text !== prevText) {
       setprogressRepetionCount(0);
       setconfirmedText('');
       prevText = text;
-
+      settxtConfirmedState(false);
       repetitionCount = 0;
       return;
     }
@@ -194,7 +198,11 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
     if (repetitionCount < textConfirmRepetion) {
       return;
     }
+    settxtConfirmedState(true);
     setconfirmedText(text); //confirmed at least required times
+    if (scanItemType === scanItemTypes.word) {
+      textSelected(text);
+    }
   };
 
   onTextRecognized = (blocks, scanType) => {
@@ -412,9 +420,28 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
                           </Text>
                         )}
                         {scanItemType === scanItemTypes.title && (
-                          <TextInput style={styles.scannedText}>
-                            {confirmedText}
-                          </TextInput>
+                          <View style={{flexDirection: 'row'}}>
+                            <View>
+                              <TextInput style={styles.scannedText}>
+                                {confirmedText}
+                              </TextInput>
+                            </View>
+                            {txtConfirmedState && (
+                              <View style={{marginLeft: 20}}>
+                                <TouchableOpacity
+                                  style={{flex: 1}}
+                                  onPress={() => onBookTitleSelected()}>
+                                  <View>
+                                    <Ionicons
+                                      name="ios-add-circle"
+                                      size={25}
+                                      color={'white'}
+                                    />
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            )}
+                          </View>
                         )}
                       </View>
                     </View>
@@ -439,7 +466,7 @@ export default function Scanner({onTextSelected}) {
 
   return (
     <>
-      {this.previewVisibility && (
+      {!this.previewVisibility && (
         <PreviewOff
           titleScanClicked={() => {
             setscanItemType(scanItemTypes.title);
@@ -451,7 +478,7 @@ export default function Scanner({onTextSelected}) {
           }}
         />
       )}
-      {!this.previewVisibility && (
+      {this.previewVisibility && (
         <PreviewOn
           textSelected={w => {
             onTextSelected(w);
