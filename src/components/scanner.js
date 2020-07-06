@@ -206,8 +206,8 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
   };
 
   onTextRecognized = (blocks, scanType) => {
-    setfirstTextIdentified(true);
     if (blocks.textBlocks.length > 0) {
+      setfirstTextIdentified(true);
       wordList = [];
       blocks.textBlocks.forEach(item => {
         item.components.forEach(component => {
@@ -222,20 +222,20 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
               };
               if (scanType === scanItemTypes.word) {
                 if (
-                  item.x > 110 &&
-                  item.x < 170 &&
-                  item.y > 120 &&
-                  item.y < 160
+                  item.x > 90 &&
+                  item.x < 140 &&
+                  item.y > 100 &&
+                  item.y < 140
                 ) {
                   wordList.push(item);
                 }
               }
               if (scanType === scanItemTypes.title) {
                 if (
-                  item.x > 100 &&
-                  item.x < 170 &&
-                  item.y > 60 &&
-                  item.y < 180
+                  item.x > 80 &&
+                  item.x < 180 &&
+                  item.y > 100 &&
+                  item.y < 160
                 ) {
                   wordList.push(item);
                 }
@@ -315,7 +315,10 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
                     <View>
                       <TouchableOpacity
                         style={styles.button}
-                        onPress={() => previewStopClicked()}>
+                        onPress={() => {
+                          previewStopClicked();
+                          setfirstTextIdentified(false);
+                        }}>
                         <View style={styles.unselectedIconHolders}>
                           <View style={styles.mainIconContainer}>
                             <FeatherIcons
@@ -333,6 +336,7 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
                         style={styles.button}
                         onPress={() => {
                           setscanItemType(scanItemTypes.title);
+                          setfirstTextIdentified(false);
                         }}>
                         <View
                           style={
@@ -363,6 +367,7 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
                         style={styles.button}
                         onPress={() => {
                           setscanItemType(scanItemTypes.word);
+                          setfirstTextIdentified(false);
                         }}>
                         <View
                           style={
