@@ -167,7 +167,7 @@ const App: () => React$Node = () => {
 
       <View style={styles.bodyColumnContainer}>
       <View style={styles.previewContainer}>
-      <Scanner></Scanner>
+      <Scanner onTextSelected = {(text) => {console.log(text);}}></Scanner>
       </View>
 
       <View style={styles.textContainer}>

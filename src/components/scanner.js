@@ -148,9 +148,91 @@ function PreviewOff({titleScanClicked, wordScanClicked}) {
   );
 }
 
-function PreviewOn({previewStopClicked, setScanItemType}) {
-  onTextRecognized = blocks => {};
+function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
   [scanItemType, setscanItemType] = useState(setScanItemType);
+
+  onTextRecognized = (blocks, scanType) => {
+    if (blocks.textBlocks.length > 0) {
+      discovered = "total blocks :"+ blocks.textBlocks.length;
+      discovered += "   block sizes: =>"
+      wordList = [];
+      blocks.textBlocks.forEach(item => {
+        item.components.forEach(component => {
+          component.components.forEach(comp => {
+            if (comp.type == 'element') {
+              item = {
+                word: comp.value,
+                x: comp.bounds.origin.x,
+                y: comp.bounds.origin.y,
+                height: comp.bounds.size.height,
+                weight: comp.bounds.size.weight,
+              };
+              if (scanType === scanItemTypes.word) {
+                if (
+                  item.x > 110 &&
+                  item.x < 170 &&
+                  item.y > 120 &&
+                  item.y < 160
+                ) {
+                  wordList.push(item);
+                }
+              }
+              if (scanType === scanItemTypes.title) {
+                if (
+                  item.x > 100 &&
+                  item.x < 170 &&
+                  item.y > 60 &&
+                  item.y < 180
+                ) {
+                  wordList.push(item);
+                }
+              }
+            }
+          });
+        });
+      });
+      if (scanType === scanItemTypes.word) {
+        wordOfInterest = wordList[0];
+        if (wordList.length > 1) {
+          tempWord = wordList[0];
+          for (idx in wordList) {
+            if (idx == 0) {
+              continue;
+            }
+            if (wordList[idx].x > wordOfInterest.x) {
+              wordOfInterest = wordList[idx];
+            }
+            if (wordList[idx].y > wordOfInterest.y) {
+              wordOfInterest = wordList[idx];
+            }
+          }
+        }
+        if (wordOfInterest) {
+          w = wordOfInterest.word.trim();
+          tokens = w.split(',');
+          if (tokens.length > 1) {
+            w = tokens[0];
+          }
+          tokens = w.split('.');
+          if (tokens.length > 1) {
+            w = tokens[0];
+          }
+          //set the selected word here:
+          textSelected(w);
+        }
+      }
+      if (scanType === scanItemTypes.title) {
+        wordList.sort((a, b) => {
+          return a.y - b.y;
+        });
+        title = '';
+        wordList.forEach(wordItem => {
+          title += wordItem.word + ' ';
+        });
+        textSelected(title.trim());
+      }
+    }
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -161,7 +243,9 @@ function PreviewOn({previewStopClicked, setScanItemType}) {
         style={styles.preview}
         type={RNCamera.Constants.Type.back}
         flashMode={RNCamera.Constants.FlashMode.off}
-        onTextRecognized={this.onTextRecognized}
+        onTextRecognized={blocks => {
+          this.onTextRecognized(blocks, this.scanItemType);
+        }}
         autoFocus={RNCamera.Constants.AutoFocus.on}>
         {({camera, status, recordAudioPermissionStatus}) => {
           return (
@@ -253,7 +337,7 @@ function PreviewOn({previewStopClicked, setScanItemType}) {
   );
 }
 
-export default function Scanner(props) {
+export default function Scanner({onTextSelected}) {
   [previewVisibility, setpreviewVisibility] = useState(false);
   [scanItemType, setscanItemType] = useState(scanItemTypes.word);
 
@@ -277,6 +361,9 @@ export default function Scanner(props) {
       )}
       {this.previewVisibility && (
         <PreviewOn
+          textSelected={w => {
+            onTextSelected(w);
+          }}
           setScanItemType={scanItemType}
           previewStopClicked={() => {
             setpreviewVisibility(false);
