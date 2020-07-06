@@ -181,11 +181,13 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
   [firstTextIdentified, setfirstTextIdentified] = useState(false);
 
   onBookTitleSelected = () => {
-    textSelected(confirmedText);
+    textSelected(confirmedText, true);
+    setfirstTextIdentified(false);
   };
 
   onTextConfirmed = text => {
     if (text !== prevText) {
+      setfirstTextIdentified(false);
       setprogressRepetionCount(0);
       setconfirmedText('');
       prevText = text;
@@ -193,6 +195,7 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
       repetitionCount = 0;
       return;
     }
+    setfirstTextIdentified(true);
     repetitionCount++;
     setprogressRepetionCount(repetitionCount / textConfirmRepetion);
     if (repetitionCount < textConfirmRepetion) {
@@ -201,13 +204,12 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
     settxtConfirmedState(true);
     setconfirmedText(text); //confirmed at least required times
     if (scanItemType === scanItemTypes.word) {
-      textSelected(text);
+      textSelected(text, false);
     }
   };
 
   onTextRecognized = (blocks, scanType) => {
     if (blocks.textBlocks.length > 0) {
-      setfirstTextIdentified(true);
       wordList = [];
       blocks.textBlocks.forEach(item => {
         item.components.forEach(component => {
@@ -224,8 +226,8 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
                 if (
                   item.x > 90 &&
                   item.x < 140 &&
-                  item.y > 100 &&
-                  item.y < 140
+                  item.y > 90 &&
+                  item.y < 130
                 ) {
                   wordList.push(item);
                 }
@@ -488,8 +490,8 @@ export default function Scanner({onTextSelected}) {
       )}
       {this.previewVisibility && (
         <PreviewOn
-          textSelected={w => {
-            onTextSelected(w);
+          textSelected={(w, flag) => {
+            onTextSelected(w, flag);
           }}
           setScanItemType={scanItemType}
           previewStopClicked={() => {
