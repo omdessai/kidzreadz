@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
   },
   previewContainer:{
     flex:3,
-    alignItems:'center'
   },
   textContainer:{
     flex:1,
