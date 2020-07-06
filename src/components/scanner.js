@@ -7,6 +7,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FeatherIcons from 'react-native-vector-icons/Feather';
 
+const scanItemTypes = {
+  word: 'word',
+  title: 'title',
+};
+
 const iconProps = {
   superIcon: {
     size: 20,
@@ -27,13 +32,24 @@ const styles = StyleSheet.create({
     margin: 5,
     backgroundColor: 'transparent',
   },
-  rectangleColor: {
+  wordRectangleColor: {
     flex: 1,
     marginTop: 120,
     marginLeft: 70,
     position: 'absolute',
     height: 50,
     width: 200,
+    borderRadius: 25,
+    borderWidth: 3,
+    margin: 10,
+  },
+  titleRectangleColor: {
+    flex: 1,
+    marginTop: 110,
+    marginLeft: 70,
+    position: 'absolute',
+    height: 100,
+    width: 220,
     borderRadius: 25,
     borderWidth: 3,
     margin: 10,
@@ -132,8 +148,9 @@ function PreviewOff({titleScanClicked, wordScanClicked}) {
   );
 }
 
-function PreviewOn({previewStopClicked}) {
-  //onTextRecognized = blocks => {};
+function PreviewOn({previewStopClicked, setScanItemType}) {
+  onTextRecognized = blocks => {};
+  [scanItemType, setscanItemType] = useState(setScanItemType);
 
   return (
     <View style={{flex: 1}}>
@@ -175,7 +192,9 @@ function PreviewOn({previewStopClicked}) {
                 <View>
                   <TouchableOpacity
                     style={styles.button}
-                    onPress={() => titleScanClicked()}>
+                    onPress={() => {
+                      setscanItemType(scanItemTypes.title);
+                    }}>
                     <View style={styles.iconHolders}>
                       <View style={styles.superIconContainer}>
                         <Icon
@@ -198,7 +217,9 @@ function PreviewOn({previewStopClicked}) {
                 <View>
                   <TouchableOpacity
                     style={styles.button}
-                    onPress={() => titleScanClicked()}>
+                    onPress={() => {
+                      setscanItemType(scanItemTypes.word);
+                    }}>
                     <View style={styles.iconHolders}>
                       <View style={styles.superIconContainer}>
                         <Icon
@@ -218,7 +239,12 @@ function PreviewOn({previewStopClicked}) {
                   </TouchableOpacity>
                 </View>
               </View>
-              <View style={styles.rectangleColor} />
+              {this.scanItemType === scanItemTypes.word && (
+                <View style={styles.wordRectangleColor} />
+              )}
+              {this.scanItemType === scanItemTypes.title && (
+                <View style={styles.titleRectangleColor} />
+              )}
             </View>
           );
         }}
@@ -229,6 +255,7 @@ function PreviewOn({previewStopClicked}) {
 
 export default function Scanner(props) {
   [previewVisibility, setpreviewVisibility] = useState(false);
+  [scanItemType, setscanItemType] = useState(scanItemTypes.word);
 
   onPreviewToggled = flag => {
     setpreviewVisibility(flag);
@@ -239,15 +266,18 @@ export default function Scanner(props) {
       {!this.previewVisibility && (
         <PreviewOff
           titleScanClicked={() => {
+            setscanItemType(scanItemTypes.title);
             setpreviewVisibility(true);
           }}
           wordScanClicked={() => {
+            setscanItemType(scanItemTypes.word);
             setpreviewVisibility(true);
           }}
         />
       )}
       {this.previewVisibility && (
         <PreviewOn
+          setScanItemType={scanItemType}
           previewStopClicked={() => {
             setpreviewVisibility(false);
           }}
