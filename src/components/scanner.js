@@ -1,9 +1,11 @@
+/* eslint-disable no-undef */
 /* eslint-disable react-native/no-inline-styles */
 import {RNCamera} from 'react-native-camera';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FeatherIcons from 'react-native-vector-icons/Feather';
 
 const iconProps = {
   superIcon: {
@@ -23,7 +25,6 @@ const styles = StyleSheet.create({
   preview: {
     flex: 1,
     margin: 5,
-    flexDirection: 'row',
     backgroundColor: 'transparent',
   },
   rectangleColor: {
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: 50,
     width: 200,
-    borderRadius: 5,
+    borderRadius: 25,
     borderWidth: 3,
     margin: 10,
   },
@@ -131,31 +132,11 @@ function PreviewOff({titleScanClicked, wordScanClicked}) {
   );
 }
 
-function PreviewOn({titleScanClicked, wordScanClicked}) {
-  onTextRecognized = blocks => {};
-
-  onPreviewToggled = flag => {
-    setpreviewVisibility(flag);
-  };
+function PreviewOn({previewStopClicked}) {
+  //onTextRecognized = blocks => {};
 
   return (
-    <View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => titleScanClicked()}>
-        <View>
-          <Icon name="camera" />
-          <Icon name="book" />
-          <Text>New Book</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => wordScanClicked()}>
-        <View>
-          <Icon name="camera" />
-          <Ionicons name="book-open" />
-          <Text>Word</Text>
-        </View>
-      </TouchableOpacity>
+    <View style={{flex: 1}}>
       <RNCamera
         ref={ref => {
           this.camera = ref;
@@ -167,13 +148,75 @@ function PreviewOn({titleScanClicked, wordScanClicked}) {
         autoFocus={RNCamera.Constants.AutoFocus.on}>
         {({camera, status, recordAudioPermissionStatus}) => {
           return (
-            <View style={styles.preview}>
-              <View style={{width: 20, height: 20}}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => this.onPreviewToggled(false)}>
-                  <Text>Off</Text>
-                </TouchableOpacity>
+            <View>
+              <View
+                style={{
+                  height: 65,
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  alignItems: 'center',
+                }}>
+                <View>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => previewStopClicked()}>
+                    <View style={styles.iconHolders}>
+                      <View style={styles.mainIconContainer}>
+                        <FeatherIcons
+                          name="camera-off"
+                          size={iconProps.mainIcon.size}
+                          color={iconProps.mainIcon.color}
+                        />
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+
+                <View>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => titleScanClicked()}>
+                    <View style={styles.iconHolders}>
+                      <View style={styles.superIconContainer}>
+                        <Icon
+                          name="camera"
+                          size={iconProps.superIcon.size}
+                          color={iconProps.superIcon.color}
+                        />
+                      </View>
+                      <View style={styles.mainIconContainer}>
+                        <Icon
+                          name="book"
+                          size={iconProps.mainIcon.size}
+                          color={iconProps.mainIcon.color}
+                        />
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+
+                <View>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => titleScanClicked()}>
+                    <View style={styles.iconHolders}>
+                      <View style={styles.superIconContainer}>
+                        <Icon
+                          name="camera"
+                          size={iconProps.superIcon.size}
+                          color={iconProps.superIcon.color}
+                        />
+                      </View>
+                      <View style={styles.mainIconContainer}>
+                        <Ionicons
+                          name="ios-book"
+                          size={iconProps.mainIcon.size}
+                          color={iconProps.mainIcon.color}
+                        />
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
               </View>
               <View style={styles.rectangleColor} />
             </View>
@@ -186,7 +229,6 @@ function PreviewOn({titleScanClicked, wordScanClicked}) {
 
 export default function Scanner(props) {
   [previewVisibility, setpreviewVisibility] = useState(false);
-  onTextRecognized = blocks => {};
 
   onPreviewToggled = flag => {
     setpreviewVisibility(flag);
@@ -194,8 +236,23 @@ export default function Scanner(props) {
 
   return (
     <>
-      {!this.previewVisibility && <PreviewOff titleScanClicked={() => {setpreviewVisibility(true);}} wordScanClicked = {() => {setpreviewVisibility(true);}}/>}
-      {this.previewVisibility && <PreviewOn />}
+      {!this.previewVisibility && (
+        <PreviewOff
+          titleScanClicked={() => {
+            setpreviewVisibility(true);
+          }}
+          wordScanClicked={() => {
+            setpreviewVisibility(true);
+          }}
+        />
+      )}
+      {this.previewVisibility && (
+        <PreviewOn
+          previewStopClicked={() => {
+            setpreviewVisibility(false);
+          }}
+        />
+      )}
     </>
   );
 }
