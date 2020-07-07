@@ -756,6 +756,7 @@
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
+					"-lstdc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zerogravitykidz.KidzReadz;
 				PRODUCT_NAME = KidzReadz;
@@ -779,6 +780,7 @@
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
+					"-lstdc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zerogravitykidz.KidzReadz;
 				PRODUCT_NAME = KidzReadz;

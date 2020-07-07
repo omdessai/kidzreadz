@@ -1,6 +1,7 @@
 class Book {
-  constructor(name) {
+  constructor(name, icon = 'book') {
     this.name = name;
+    this.icon = icon;
     this.wordList = {};
   }
 

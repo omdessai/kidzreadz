@@ -78,7 +78,8 @@ function addFakeBook(actions){
     if(bookCount > 10) return;
     addFakeBook(actions);
     bookCount++;
-    actions.addBook(new Book("book" + bookCount));
+    if (bookCount == 1) {actions.addBook(new Book("My Word List", 'list'));}
+    else {actions.addBook(new Book("My Book" + bookCount));}
   }, 3000);
 };
  
