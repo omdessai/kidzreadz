@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable react-native/no-inline-styles */
 import {
   StyleSheet,
@@ -10,7 +11,6 @@ import {
 
 import React, {useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 import LinearGradient from 'react-native-linear-gradient';
 
 const styles = StyleSheet.create({
@@ -27,48 +27,64 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 15,
     paddingRight: 15,
-    borderRadius: 5,
+    borderRadius: 10,
+    flexDirection: 'row',
+    paddingVertical: 5,
+    justifyContent: 'space-between',
   },
   buttonText: {
-    fontSize: 18,
-    fontFamily: 'Gill Sans',
+    fontSize: 24,
+    fontWeight: 'bold',
     textAlign: 'center',
-    margin: 10,
-    color: '#ffffff',
+    color: 'green',
     backgroundColor: 'transparent',
+  },
+  bookNameHolder: {
+    flex: 1,
+    flexDirection: 'row',
   },
 });
 
 export default function WordList({store}) {
-  //console.log("Booklist " + JSON.stringify(store));
+  bookData = store.bookList.array();
 
+  [selectedTabName, setSelectedTabName] = useState(bookData[0].name);
   return (
     <View style={{flex: 1}}>
       <SafeAreaView style={styles.container}>
         <FlatList
           style={styles.container}
-          data={store.bookList.array()}
+          data={bookData}
           renderItem={({item}) => (
-            <View style={{borderWidth: 1}}>
+            <View style={{}}>
               <TouchableOpacity style={{flex: 1}}>
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    paddingHorizontal: 20,
-                  }}>
-                  <Ionicons name={item.icon} size={20} color={'grey'} />
-
+                <View style={styles.bookNameHolder}>
                   <LinearGradient
-                    colors={['#4c669f', '#3b5998', '#192f6a']}
+                    colors={['ivory', 'lightgrey', 'grey']}
                     style={styles.linearGradient}>
-                    <Text style={styles.buttonText}>{item.name}</Text>
                     <Ionicons
-                      name="chevron-down-circle-outline"
-                      size={20}
-                      color={'grey'}
+                      name={item.icon}
+                      size={30}
+                      style={{marginRight: 10}}
+                      color={
+                        selectedTabName === item.name ? 'darkgreen' : 'olive'
+                      }
                     />
+                    <Text style={styles.buttonText}>{item.name}</Text>
+                    {selectedTabName !== item.name && (
+                      <Ionicons
+                        name="chevron-forward-circle-outline"
+                        size={30}
+                        color={'darkgreen'}
+                      />
+                    )}
+                    {selectedTabName === item.name && (
+                      <Ionicons
+                        name="chevron-down-circle"
+                        size={30}
+                        color={'darkgreen'}
+                      />
+                    )}
                   </LinearGradient>
                 </View>
               </TouchableOpacity>

@@ -37,14 +37,14 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     flex: 1,
-    backgroundColor: 'grey',
+    backgroundColor: 'lightgrey',
   },
   previewContainer: {
     flex: 3,
   },
   wordListContainer: {
     flex: 5,
-    backgroundColor: '#9fdf9f',
+    backgroundColor: 'lightgrey',
   },
 });
 
