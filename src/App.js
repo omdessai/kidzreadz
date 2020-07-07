@@ -5,9 +5,11 @@ import Scanner from './components/scanner';
 import WordList from './components/wordlist';
 
 import  {Books} from './services/store/books';
-import {Book} from './services/store/book';
+import book, {Book} from './services/store/book';
 import globalHook from 'use-global-hook';
  
+import  {Webster} from './services/dictionaries/webster';
+import Sound from 'react-native-sound';
 
 const styles = StyleSheet.create({
   container: {
@@ -68,18 +70,44 @@ const actions = {
     }
   }
 };
+
+bookCount = 0;
+function addFakeBook(actions){
+  setTimeout(() => {
+    console.log("interval" + bookCount)
+    if(bookCount > 10) return;
+    addFakeBook(actions);
+    bookCount++;
+    actions.addBook(new Book("book" + bookCount));
+  }, 3000);
+};
  
+
 const useGlobal = globalHook(React, initialState, actions);
 
 const App: () => React$Node = () => {
   const [globalState, globalActions] = useGlobal();
 
-  /*
-  setTimeout(() => {
-    bookList.add(new Book('wonder1'));
-    this.setBookList(bookList);
-  }, 10000);
-  */
+  const [meaning, setMeaning] = useState("");
+
+  addFakeBook(globalActions);
+  
+  definitionDiscovered = async (text) =>  {
+    webster = new Webster();
+                 definition = await webster.lookup(text);
+                  sound = new Sound(definition.audio, null, (error) => {
+                    if (error) {
+                      // do something
+                    }
+            
+                    // play when loaded
+                    sound.play();
+                  });
+                  setMeaning(definition.meaning);
+
+                 
+  }
+  
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -87,19 +115,25 @@ const App: () => React$Node = () => {
       </View>
       <View style={styles.bodyContainer}>
         <View style={styles.previewContainer}>
-          <Scanner
+          {/*
+        <Scanner
             onTextSelected={(text, isTitle) => {
               console.log("Is title " + isTitle)
               if (isTitle) {
                 globalActions.addBook(new Book(text));
               } else {
                 globalActions.addWord(text);
+                definitionDiscovered(text);
+
               }
             }}
           />
+          */}
         </View>
-        <View style={styles.wordListContainer} />
-        <WordList store={globalState} />
+        <View style={styles.wordListContainer} >
+            {/*<Text>{meaning}</Text>*/}
+            <WordList store={globalState} />
+        </View>
       </View>
       <View style={styles.footer}>
         <Text style={styles.footerTitle}>ZeroGravity Kidz</Text>
