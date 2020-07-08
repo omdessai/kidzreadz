@@ -126,7 +126,6 @@ export default function WordList({store}) {
         <View
           style={{
             height: 80,
-            borderWidth: 1,
             paddingTop: 20,
             alignItems: 'center',
           }}>

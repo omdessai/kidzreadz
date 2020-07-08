@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
 
 
 let bk = new Book("My Word List", 'list');
+/*
 bk.addWord(new Word('little', 'less', ));
 bk.addWord(new Word('Procrastination', 'more', 'b.mp3'));
 bk.addWord(new Word('mid', 'medium', 'c.mp3'));
@@ -64,6 +65,7 @@ bk.addWord(new Word('mid1', 'medium', 'c.mp3'));
 bk.addWord(new Word('Delved1', 'less', 'a.mp3'));
 bk.addWord(new Word('Indefatigable1', 'more', 'b.mp3'));
 bk.addWord(new Word('mid1', 'medium'));
+*/
 
 let books = new Books();
 books.add(bk);
@@ -108,22 +110,51 @@ const useGlobal = globalHook(React, initialState, actions);
 const App: () => React$Node = () => {
   const [globalState, globalActions] = useGlobal();
 
-  const [meaning, setMeaning] = useState("");
 
-  addFakeBook(globalActions);
+  //addFakeBook(globalActions);
   
-  definitionDiscovered = async (text) =>  {
+  wordDiscovered = async (text) =>  {
+    
     webster = new Webster();
                  definition = await webster.lookup(text);
-                  sound = new Sound(definition.audio, null, (error) => {
-                    if (error) {
-                      // do something
-                    }
-            
-                    // play when loaded
-                    sound.play();
-                  });
-                  setMeaning(definition.meaning);
+                 console.log(JSON.stringify(definition));
+
+
+                audiourl = 'https://media.merriam-webster.com/audio/prons/en/us/mp3/l/limit001.mp3';
+                
+
+
+
+
+
+      // Load the sound file
+      const music = new Sound(audiourl, null, (error) => {
+        if (error) {
+          console.log('failed to load the sound', error);
+          return;
+        }
+        // loaded successfully, play			
+        music.play((success) => {
+          if (success) {
+            console.log('successfully finished playing');
+          } else {
+            console.log('playback failed due to audio decoding errors');
+          }
+        });
+      });
+
+/*
+                 sound = new Sound(definition.audio, null, (error) => {
+                  if (error) {
+                    // do something
+                    console.log(error);
+                  }
+                  console.log("playing "+ definition.audio);
+                  // play when loaded
+                  sound.play();
+                });
+*/
+                globalActions.addWord(new Word(text, definition.meaning, definition.audio));
 
                  
   }
@@ -135,20 +166,20 @@ const App: () => React$Node = () => {
       </View>
       <View style={styles.bodyContainer}>
         <View style={styles.previewContainer}>
-          {/*
+          
         <Scanner
             onTextSelected={(text, isTitle) => {
-              console.log("Is title " + isTitle)
+              console.log("discovered text "+ text)
               if (isTitle) {
                 globalActions.addBook(new Book(text));
               } else {
-                globalActions.addWord(text);
-                definitionDiscovered(text);
+ 
+                wordDiscovered(text);
 
               }
             }}
           />
-          */}
+          
         </View>
         <View style={styles.wordListContainer} >
             {/*<Text>{meaning}</Text>*/}
