@@ -16,7 +16,7 @@ import * as Progress from 'react-native-progress';
 
 repetitionCount = 0;
 prevText = '';
-textConfirmRepetion = 2; //required to get atleast these repitions to confirm the text
+textConfirmRepetion = 1; //required to get atleast these repitions to confirm the text
 
 const scanItemTypes = {
   word: 'word',
