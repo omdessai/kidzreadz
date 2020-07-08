@@ -86,10 +86,11 @@ export default function BookList({store}) {
                       />
                     )}
                   </LinearGradient>
-                  {selectedTabName === item.name &&
-                  <WordList store={store}></WordList>}
+                  
                 </View>
               </TouchableOpacity>
+              {selectedTabName === item.name &&
+                  <WordList store={store}></WordList>}
             </View>
           )}
           keyExtractor={item => item.name}
