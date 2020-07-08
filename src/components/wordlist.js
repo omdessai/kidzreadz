@@ -16,7 +16,8 @@ import LinearGradient from 'react-native-linear-gradient';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height:280,
+    minHeight:280,
+    maxHeight:280
   },
   linearGradient: {
     flex: 1,
@@ -28,6 +29,7 @@ const styles = StyleSheet.create({
     borderWidth:1,
   },
   wordText: {
+      flex:1,
     fontSize: 20,
     textAlign: 'left',
     color: 'green',
@@ -40,39 +42,32 @@ const styles = StyleSheet.create({
 
 export default function WordList({store}) {
   book = store.activeBook;
-    //worddata = book && book.array ? book.array():[];
-    worddata =  [{"name":"little","meaning":"less","audiourl":"a.mp3"},
-    {"name":"big","meaning":"more","audiourl":"b.mp3"},
-    {"name":"mid","meaning":"medium","audiourl":"c.mp3"},
-    {"name":"little1","meaning":"less","audiourl":"a.mp3"},
-    {"name":"big1","meaning":"more","audiourl":"b.mp3"},
-    {"name":"mid1","meaning":"medium","audiourl":"c.mp3"}];
-    console.log(JSON.stringify(worddata));
+    worddata = book && book.array ? book.array():[];
+    
   [selectedWord, setselectedWord] = useState('');
 
   return (
     <View style={{flex: 1}}>
       <SafeAreaView style={styles.container}>
+      
         <FlatList
-          style={styles.container}
+          style={{flex: 1, padding:20}}
           data={worddata}
           renderItem={({item}) => (
-            <View style={{}}>
+            <View style={{flex: 1, borderWidth:1}}>
               <TouchableOpacity style={{flex: 1}}>
-                <View style={styles.wordHolder}>
                   <LinearGradient
                     colors={['ivory', 'lightgrey', 'grey']}
-                    style={styles.linearGradient}>
-                        {console.log(item.name)}
-                    <Text style={styles.wordText}>{item.name}</Text>
+                    style={{flex: 1, padding:5}}>
+                    <Text >{item.name}</Text>
                     
                   </LinearGradient>
-                </View>
               </TouchableOpacity>
             </View>
           )}
           keyExtractor={item => item.name}
-        />
+          />
+          <View style={{flex: 1, borderWidth:1}}></View>
       </SafeAreaView>
     </View>
   );
