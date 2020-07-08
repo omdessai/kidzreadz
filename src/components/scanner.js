@@ -194,6 +194,8 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
       settxtConfirmedState(false);
       repetitionCount = 0;
       return;
+    } else if (confirmedText === text) {
+      return;
     }
     setfirstTextIdentified(true);
     repetitionCount++;
