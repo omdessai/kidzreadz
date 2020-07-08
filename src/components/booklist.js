@@ -44,10 +44,10 @@ export default function BookList({store}) {
   bookData = store.bookList.array();
 
   //if (bookData.Length > 0) {
-    [selectedTabName, setSelectedTabName] = useState(bookData[0].name);
+  [selectedTabName, setSelectedTabName] = useState(bookData[0].name);
   //} else {
-    //[selectedTabName, setSelectedTabName] = useState('');
- // }
+  //[selectedTabName, setSelectedTabName] = useState('');
+  // }
 
   return (
     <View style={{flex: 1}}>
@@ -86,11 +86,9 @@ export default function BookList({store}) {
                       />
                     )}
                   </LinearGradient>
-                  
                 </View>
               </TouchableOpacity>
-              {selectedTabName === item.name &&
-                  <WordList store={store}></WordList>}
+              {selectedTabName === item.name && <WordList store={store} />}
             </View>
           )}
           keyExtractor={item => item.name}

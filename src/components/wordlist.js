@@ -13,6 +13,7 @@ import {
 import React, {useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
+import Sound from 'react-native-sound';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,15 +35,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   highlightedWordText: {
-    fontSize: 20,
+    fontSize: 17,
     marginVertical: 2,
     marginHorizontal: 5,
+    fontWeight: 'bold',
     textAlign: 'center',
     color: 'green',
     backgroundColor: 'transparent',
   },
-  wordHolder: {
-    flex: 1,
+  meaningWordText: {
+    fontSize: 22,
+    marginVertical: 2,
+    marginHorizontal: 5,
+    textAlign: 'left',
+    color: 'olive',
+    backgroundColor: 'transparent',
   },
 });
 
@@ -50,21 +57,56 @@ export default function WordList({store}) {
   book = store.activeBook;
   worddata = book && book.array ? book.array() : [];
   [selectedWord, setselectedWord] = useState('');
+  [meaning, setMeaning] = useState('');
+
+  unselectedGradientColors = ['ivory', 'lightgrey'];
+  selectedGradientColors = ['ivory', 'grey'];
+  selectedWordName =
+    selectedWord && selectedWord.name.length > 0 && selectedWord.name
+      ? selectedWord.name
+      : '';
+
+  selectWord = word => {
+    setMeaning(word.meaning);
+    setselectedWord(word);
+    if (word.audiourl) {
+      sound = new Sound(word.audiourl, null, error => {
+        if (error) {
+          return;
+        }
+        sound.play();
+      });
+    }
+  };
 
   return (
     <View style={styles.container}>
       <SafeAreaView style={{flex: 1}}>
-        <ScrollView indicatorStyle="black" style={{flex: 4}}>
+        <ScrollView indicatorStyle="black" style={{flex: 3}}>
           <TouchableWithoutFeedback>
             <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
               {worddata.map((word, index) => {
                 return (
-                  <TouchableOpacity>
-                    <View style={{borderRadius: 10, margin: 3}}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      selectWord(word);
+                    }}>
+                    <View style={{margin: 3}}>
                       <LinearGradient
-                        colors={['ivory', 'lightgrey', 'grey']}
+                        colors={
+                          selectedWordName === word.name
+                            ? selectedGradientColors
+                            : unselectedGradientColors
+                        }
                         style={styles.linearGradient}>
-                        <Text style={styles.wordText}>{word.name}</Text>
+                        {selectedWordName === word.name && (
+                          <Text style={styles.highlightedWordText}>
+                            {word.name}
+                          </Text>
+                        )}
+                        {!(selectedWordName === word.name) && (
+                          <Text style={styles.wordText}>{word.name}</Text>
+                        )}
 
                         {word.audiourl && (
                           <Ionicons
@@ -81,8 +123,16 @@ export default function WordList({store}) {
             </View>
           </TouchableWithoutFeedback>
         </ScrollView>
-        <View style={{flex: 1, borderWidth: 1}} />
+        <View
+          style={{
+            height: 80,
+            borderWidth: 1,
+            paddingTop: 20,
+            alignItems: 'center',
+          }}>
+          <Text style={styles.meaningWordText}>{meaning}</Text>
+        </View>
       </SafeAreaView>
     </View>
   );
-};
+}
