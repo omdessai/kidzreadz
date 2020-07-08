@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 
 
 let bk = new Book("My Word List", 'list');
-bk.addWord(new Word('little', 'less', 'a.mp3'));
+bk.addWord(new Word('little', 'less', ));
 bk.addWord(new Word('Procrastination', 'more', 'b.mp3'));
 bk.addWord(new Word('mid', 'medium', 'c.mp3'));
 bk.addWord(new Word('Delved', 'less', 'a.mp3'));
@@ -63,7 +63,7 @@ bk.addWord(new Word('Procrastination1', 'more', 'b.mp3'));
 bk.addWord(new Word('mid1', 'medium', 'c.mp3'));
 bk.addWord(new Word('Delved1', 'less', 'a.mp3'));
 bk.addWord(new Word('Indefatigable1', 'more', 'b.mp3'));
-bk.addWord(new Word('mid1', 'medium', 'c.mp3'));
+bk.addWord(new Word('mid1', 'medium'));
 
 let books = new Books();
 books.add(bk);
