@@ -53,8 +53,17 @@ const styles = StyleSheet.create({
 
 let bk = new Book("My Word List", 'list');
 bk.addWord(new Word('little', 'less', 'a.mp3'));
-bk.addWord(new Word('big', 'more', 'b.mp3'));
+bk.addWord(new Word('Procrastination', 'more', 'b.mp3'));
 bk.addWord(new Word('mid', 'medium', 'c.mp3'));
+bk.addWord(new Word('Delved', 'less', 'a.mp3'));
+bk.addWord(new Word('Indefatigable', 'more', 'b.mp3'));
+bk.addWord(new Word('mid', 'medium', 'c.mp3'));
+bk.addWord(new Word('little1', 'less', 'a.mp3'));
+bk.addWord(new Word('Procrastination1', 'more', 'b.mp3'));
+bk.addWord(new Word('mid1', 'medium', 'c.mp3'));
+bk.addWord(new Word('Delved1', 'less', 'a.mp3'));
+bk.addWord(new Word('Indefatigable1', 'more', 'b.mp3'));
+bk.addWord(new Word('mid1', 'medium', 'c.mp3'));
 
 let books = new Books();
 books.add(bk);
@@ -85,7 +94,7 @@ bookCount = 0;
 function addFakeBook(actions){
   setTimeout(() => {
     //console.log("interval" + bookCount)
-    if(bookCount > 10) return;
+    if(bookCount > 2) return;
     addFakeBook(actions);
     bookCount++;
     

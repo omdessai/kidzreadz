@@ -7,6 +7,8 @@ import {
   Text,
   FlatList,
   SafeAreaView,
+  ScrollView,
+  TouchableWithoutFeedback
 } from 'react-native';
 
 import React, {useState} from 'react';
@@ -16,8 +18,8 @@ import LinearGradient from 'react-native-linear-gradient';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    minHeight:280,
-    maxHeight:280
+    minHeight:100,
+    maxHeight:100
   },
   linearGradient: {
     flex: 1,
@@ -29,9 +31,18 @@ const styles = StyleSheet.create({
     borderWidth:1,
   },
   wordText: {
-      flex:1,
+    fontSize: 18,
+    marginVertical:2,
+    marginHorizontal:5,
+    textAlign: 'center',
+    color: 'green',
+    backgroundColor: 'transparent',
+  },
+  highlightedWordText: {
     fontSize: 20,
-    textAlign: 'left',
+    marginVertical:2,
+    marginHorizontal:5,
+    textAlign: 'center',
     color: 'green',
     backgroundColor: 'transparent',
   },
@@ -47,27 +58,24 @@ export default function WordList({store}) {
   [selectedWord, setselectedWord] = useState('');
 
   return (
-    <View style={{flex: 1}}>
-      <SafeAreaView style={styles.container}>
-      
-        <FlatList
-          style={{flex: 1, padding:20}}
-          data={worddata}
-          renderItem={({item}) => (
-            <View style={{flex: 1, borderWidth:1}}>
-              <TouchableOpacity style={{flex: 1}}>
-                  <LinearGradient
-                    colors={['ivory', 'lightgrey', 'grey']}
-                    style={{flex: 1, padding:5}}>
-                    <Text >{item.name}</Text>
-                    
-                  </LinearGradient>
-              </TouchableOpacity>
-            </View>
-          )}
-          keyExtractor={item => item.name}
-          />
-          <View style={{flex: 1, borderWidth:1}}></View>
+    <View style={styles.container}>
+        <SafeAreaView style={{flex: 3}}>
+
+        <ScrollView indicatorStyle='black' >
+            <TouchableWithoutFeedback>
+        <View style={{flexWrap:'wrap', flexDirection:'row'}}>
+        {worddata.map((word, index) => {
+            
+            return(
+            <View style={{borderWidth:1, borderRadius:10, margin:3}} >
+                <Text style={styles.wordText}>{word.name}</Text>
+                </View>
+                );
+        })}
+        </View>
+        </TouchableWithoutFeedback>
+      </ScrollView>
+      <View style={{flex: 1, borderWidth:1}}></View>
       </SafeAreaView>
     </View>
   );
