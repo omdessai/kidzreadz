@@ -16,75 +16,56 @@ import LinearGradient from 'react-native-linear-gradient';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  booktitle: {
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 24,
-    fontWeight: 'bold',
+    height:280,
   },
   linearGradient: {
     flex: 1,
     paddingLeft: 15,
     paddingRight: 15,
-    borderRadius: 10,
     flexDirection: 'row',
-    paddingVertical: 5,
+    paddingVertical: 2,
     justifyContent: 'space-between',
+    borderWidth:1,
   },
-  buttonText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
+  wordText: {
+    fontSize: 20,
+    textAlign: 'left',
     color: 'green',
     backgroundColor: 'transparent',
   },
-  bookNameHolder: {
+  wordHolder: {
     flex: 1,
-    flexDirection: 'row',
   },
 });
 
 export default function WordList({store}) {
-  bookData = store.bookList.array();
+  book = store.activeBook;
+    //worddata = book && book.array ? book.array():[];
+    worddata =  [{"name":"little","meaning":"less","audiourl":"a.mp3"},
+    {"name":"big","meaning":"more","audiourl":"b.mp3"},
+    {"name":"mid","meaning":"medium","audiourl":"c.mp3"},
+    {"name":"little1","meaning":"less","audiourl":"a.mp3"},
+    {"name":"big1","meaning":"more","audiourl":"b.mp3"},
+    {"name":"mid1","meaning":"medium","audiourl":"c.mp3"}];
+    console.log(JSON.stringify(worddata));
+  [selectedWord, setselectedWord] = useState('');
 
-  [selectedTabName, setSelectedTabName] = useState(bookData[0].name);
   return (
     <View style={{flex: 1}}>
       <SafeAreaView style={styles.container}>
         <FlatList
           style={styles.container}
-          data={bookData}
+          data={worddata}
           renderItem={({item}) => (
             <View style={{}}>
               <TouchableOpacity style={{flex: 1}}>
-                <View style={styles.bookNameHolder}>
+                <View style={styles.wordHolder}>
                   <LinearGradient
                     colors={['ivory', 'lightgrey', 'grey']}
                     style={styles.linearGradient}>
-                    <Ionicons
-                      name={item.icon}
-                      size={30}
-                      style={{marginRight: 10}}
-                      color={
-                        selectedTabName === item.name ? 'darkgreen' : 'olive'
-                      }
-                    />
-                    <Text style={styles.buttonText}>{item.name}</Text>
-                    {selectedTabName !== item.name && (
-                      <Ionicons
-                        name="chevron-forward-circle-outline"
-                        size={30}
-                        color={'darkgreen'}
-                      />
-                    )}
-                    {selectedTabName === item.name && (
-                      <Ionicons
-                        name="chevron-down-circle"
-                        size={30}
-                        color={'darkgreen'}
-                      />
-                    )}
+                        {console.log(item.name)}
+                    <Text style={styles.wordText}>{item.name}</Text>
+                    
                   </LinearGradient>
                 </View>
               </TouchableOpacity>

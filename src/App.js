@@ -2,10 +2,12 @@ import React, {useState} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 
 import Scanner from './components/scanner';
-import WordList from './components/wordlist';
+import BookList from './components/booklist';
+import WordList from './components/wordlist'; 
 
 import  {Books} from './services/store/books';
-import book, {Book} from './services/store/book';
+import {Book} from './services/store/book';
+import  {Word} from './services/store/word';
 import globalHook from 'use-global-hook';
  
 import  {Webster} from './services/dictionaries/webster';
@@ -49,16 +51,24 @@ const styles = StyleSheet.create({
 });
 
 
+let bk = new Book("My Word List", 'list');
+bk.addWord(new Word('little', 'less', 'a.mp3'));
+bk.addWord(new Word('big', 'more', 'b.mp3'));
+bk.addWord(new Word('mid', 'medium', 'c.mp3'));
+
+let books = new Books();
+books.add(bk);
+
 const initialState = {
-  bookList: new Books(),
-  activeBook: {},
+  bookList: books,
+  activeBook: bk,
 };
  
 const actions = {
   addBook: (store, book) => {
     const bookList = store.state.bookList;
     bookList.add(book);
-    store.setState({bookList: bookList, activeBook: book});
+    store.setState({bookList: bookList, activeBook: store.state.activeBook});
   },
 
   addWord: (store, word) => {
@@ -74,12 +84,12 @@ const actions = {
 bookCount = 0;
 function addFakeBook(actions){
   setTimeout(() => {
-    console.log("interval" + bookCount)
+    //console.log("interval" + bookCount)
     if(bookCount > 10) return;
     addFakeBook(actions);
     bookCount++;
-    if (bookCount == 1) {actions.addBook(new Book("My Word List", 'list'));}
-    else {actions.addBook(new Book("My Book" + bookCount));}
+    
+    actions.addBook(new Book("My Book" + bookCount));
   }, 3000);
 };
  
@@ -133,7 +143,7 @@ const App: () => React$Node = () => {
         </View>
         <View style={styles.wordListContainer} >
             {/*<Text>{meaning}</Text>*/}
-            <WordList store={globalState} />
+            <BookList store={globalState}></BookList>
         </View>
       </View>
       <View style={styles.footer}>
