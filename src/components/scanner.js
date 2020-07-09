@@ -30,7 +30,7 @@ const iconProps = {
   },
   mainIcon: {
     size: 50,
-    color: '#00B8F3',
+    color: 'ivory',
   },
 };
 
@@ -179,6 +179,7 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
   [confirmedText, setconfirmedText] = useState('');
   [progressRepetionCount, setprogressRepetionCount] = useState(0);
   [firstTextIdentified, setfirstTextIdentified] = useState(false);
+  [calibrationMode, setcalibrationMode] = useState(false);
 
   onBookTitleSelected = () => {
     textSelected(confirmedText, true);
@@ -328,7 +329,30 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
                             <FeatherIcons
                               name="camera-off"
                               size={iconProps.mainIcon.size}
-                              color={'red'}
+                              color={'ivory'}
+                            />
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+
+                    <View>
+                      <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => {
+                          setcalibrationMode(!calibrationMode);
+                        }}>
+                        <View
+                          style={
+                            calibrationMode
+                              ? styles.iconHolders
+                              : styles.unselectedIconHolders
+                          }>
+                          <View style={styles.mainIconContainer}>
+                            <Ionicons
+                              name="compass"
+                              size={iconProps.mainIcon.size}
+                              color={'ivory'}
                             />
                           </View>
                         </View>
