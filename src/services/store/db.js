@@ -39,12 +39,17 @@ class PersistData {
   async addPreferences(key, settingsObj) {
     db.transaction(function(tx) {
       tx.executeSql(
-        'INSERT INTO preferences (key, value) VALUES (?, ?)',
-        [key, JSON.stringify(settingsObj)],
+        'DELETE FROM preferences where key =?',
+        [key],
         (_tx, results) => {
-          console.log('Preferences Written =>', results.rowsAffected);
-        },
-      );
+          tx.executeSql(
+            'INSERT INTO preferences (key, value) VALUES (?, ?)',
+            [key, JSON.stringify(settingsObj)],
+            (__tx, _results) => {
+              console.log('Preferences Written =>', _results.rowsAffected);
+            },
+          );
+        });
     });
   }
 
@@ -55,20 +60,22 @@ class PersistData {
         [key],
         function(tx, res) {
           if (res.rows.length !== 0) {
-            cb(JSON.parse(res.rows.item(0).value));
+            cb(JSON.parse(res.rows.item(0).VALUE));
           }
         },
       );
     });
   }
 
-  async getBooksAndWords(books) {
+  async getBooksAndWords(books, cb) {
     db.transaction(function(txn) {
       txn.executeSql('SELECT * FROM books', [], function(tx, res) {
         if (res.rows.length !== 0) {
-          for (let i = 0; i < res.rows.length; ++i) {
+          console.log('getBooksAndWords' + res.rows.length);
+          for (let i = 0; i < res.rows.length; i++) {
+            console.log(res.rows.item(i))
             let book = new Book(res.rows.item(i).book);
-            books.addBook(book);
+            //books.addBook(book);
           }
           txn.executeSql(
             'SELECT word, book, definition, audio FROM Bookwords inner join words on bookwords.word = words.word',
@@ -84,9 +91,11 @@ class PersistData {
                   books.getBook(wordres.rows.item(j).book).addWord(word);
                 }
               }
+              if (cb) cb();
             },
           );
         }
+        
       });
     });
   }

@@ -9,6 +9,7 @@ import {Word} from './services/store/word';
 import globalHook from 'use-global-hook';
 import {Webster} from './services/dictionaries/webster';
 import Sound from 'react-native-sound';
+import {PersistData} from './services/store/db';
 
 const styles = StyleSheet.create({
   container: {
@@ -73,10 +74,47 @@ const actions = {
   },
 };
 
+testDb = () => {
+  console.log("in test db");
+  let test = new PersistData();
+  /*
+  test.getPreferences('calibrations', (settings) => {console.log(JSON.stringify(settings));});
+  test.addPreferences('calibrations', {x:1, y:1, z:1, w:2});
+  test.getPreferences('calibrations', (settings) => {console.log(JSON.stringify(settings));});
+*/
+console.log("===> in test db - connected");
+  var bks = new Books();
+  test.getBooksAndWords(bks, () => {console.log(JSON.stringify(bks))});
+  let bk1 = new Book('A1');
+  let bk2 = new Book('A2');
+  let bk3 = new Book('A3');
+
+  test.addBook(bk1);
+  test.addBook(bk2);
+  test.addBook(bk3);
+
+  let wd1 = new Word('W1', 'M1', 'a1.mp3');
+  let wd2 = new Word('W2', 'M2', 'a2.mp3');
+  let wd3 = new Word('W2', 'M3', 'a3.mp3');
+  let wd4 = new Word('W3', 'M4', 'a4.mp3');
+  let wd5 = new Word('W4', 'M5', 'a5.mp3');
+
+
+  test.addWord(wd1, bk1);
+  test.addWord(wd2, bk1);
+  test.addWord(wd3, bk2);
+  test.addWord(wd4, bk3);
+  test.addWord(wd5, bk3);
+  test.getBooksAndWords(bks, () => {console.log(JSON.stringify(bks))});
+};
+
+testDb();
+
 const useGlobal = globalHook(React, initialState, actions);
 
 const App: () => React$Node = () => {
-  const [globalState, globalActions] = useGlobal();
+  //const [globalState, globalActions] = useGlobal();
+  //testDb();
 
   wordDiscovered = async text => {
     webster = new Webster();
@@ -120,7 +158,7 @@ const App: () => React$Node = () => {
           />
         </View>
         <View style={styles.wordListContainer}>
-          <BookList store={globalState} />
+         {/* <BookList store={globalState} />*/}
         </View>
       </View>
       <View style={styles.footer}>
