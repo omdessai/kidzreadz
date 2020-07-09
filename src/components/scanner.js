@@ -173,7 +173,13 @@ function PreviewOff({titleScanClicked, wordScanClicked}) {
   );
 }
 
-function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
+function PreviewOn({
+  previewStopClicked,
+  setScanItemType,
+  textSelected,
+  calibrationClicked,
+  setCalibrationText,
+}) {
   [scanItemType, setscanItemType] = useState(setScanItemType);
   [txtConfirmedState, settxtConfirmedState] = useState(false);
   [confirmedText, setconfirmedText] = useState('');
@@ -214,6 +220,7 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
   onTextRecognized = (blocks, scanType) => {
     if (blocks.textBlocks.length > 0) {
       wordList = [];
+      allwords = [];
       blocks.textBlocks.forEach(item => {
         item.components.forEach(component => {
           component.components.forEach(comp => {
@@ -225,6 +232,7 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
                 height: comp.bounds.size.height,
                 weight: comp.bounds.size.weight,
               };
+              allwords.push(item);
               if (scanType === scanItemTypes.word) {
                 if (
                   item.x > 90 &&
@@ -249,6 +257,10 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
           });
         });
       });
+      setCalibrationText(allwords);
+      if (calibrationMode) {
+        return;
+      }
       if (scanType === scanItemTypes.word) {
         wordOfInterest = wordList[0];
         if (wordList.length > 1) {
@@ -340,6 +352,7 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
                       <TouchableOpacity
                         style={styles.button}
                         onPress={() => {
+                          calibrationClicked(!calibrationMode);
                           setcalibrationMode(!calibrationMode);
                         }}>
                         <View
@@ -492,7 +505,11 @@ function PreviewOn({previewStopClicked, setScanItemType, textSelected}) {
   );
 }
 
-export default function Scanner({onTextSelected}) {
+export default function Scanner({
+  onTextSelected,
+  onCalibrationChanged,
+  onCalibrationTextChanged,
+}) {
   [previewVisibility, setpreviewVisibility] = useState(false);
   [scanItemType, setscanItemType] = useState(scanItemTypes.word);
 
@@ -522,6 +539,12 @@ export default function Scanner({onTextSelected}) {
           setScanItemType={scanItemType}
           previewStopClicked={() => {
             setpreviewVisibility(false);
+          }}
+          calibrationClicked={calibrationMode => {
+            onCalibrationChanged(calibrationMode);
+          }}
+          setCalibrationText={text => {
+            onCalibrationTextChanged(text);
           }}
         />
       )}

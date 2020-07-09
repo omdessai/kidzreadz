@@ -1,8 +1,9 @@
 /* eslint-disable no-undef */
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import Scanner from './components/scanner';
 import BookList from './components/booklist';
+import CalibrationList from './components/calibrationlist';
 import {Books} from './services/store/books';
 import {Book} from './services/store/book';
 import {Word} from './services/store/word';
@@ -55,13 +56,15 @@ books.add(bk);
 const initialState = {
   bookList: books,
   activeBook: bk,
+  calibrationText: [],
 };
 
 const actions = {
   addBook: (store, book) => {
     const bookList = store.state.bookList;
     bookList.add(book);
-    store.setState({bookList: bookList, activeBook: store.state.activeBook});
+    let newObj = {bookList: bookList};
+    store.setState({...store.state, ...newObj});
   },
 
   addWord: (store, word) => {
@@ -69,8 +72,14 @@ const actions = {
     let bookFromList = bookList.getBook(store.state.activeBook.name);
     if (bookFromList && bookFromList.addWord) {
       bookFromList.addWord(word);
-      store.setState({bookList: bookList, activeBook: bookFromList});
+      let newObj = {bookList: bookList, activeBook: bookFromList};
+      store.setState({...store.state, ...newObj});
     }
+  },
+
+  addCalibrationList: (store, calibrationList) => {
+    let newObj = {calibrationText: calibrationList};
+    store.setState({...store.state, ...newObj});
   },
 };
 
@@ -108,14 +117,18 @@ console.log("===> in test db - connected");
   test.getBooksAndWords(bks, () => {console.log(JSON.stringify(bks))});
 };
 
-testDb();
+//testDb();
 
 const useGlobal = globalHook(React, initialState, actions);
 
 const App: () => React$Node = () => {
-  //const [globalState, globalActions] = useGlobal();
+  const [globalState, globalActions] = useGlobal();
   //testDb();
 
+  [calibrationMode, setcalibrationMode] = useState(false);
+  nonCalibMode = !calibrationMode;
+
+  [temp, settemp] = useState(false);
   wordDiscovered = async text => {
     webster = new Webster();
     definition = await webster.lookup(text);
@@ -155,11 +168,24 @@ const App: () => React$Node = () => {
                 wordDiscovered(text);
               }
             }}
+            onCalibrationChanged={mode => {
+              setcalibrationMode(mode);
+              settemp(mode);
+            }}
+            onCalibrationTextChanged={wordList => {
+              globalActions.addCalibrationList(wordList);
+            }}
           />
         </View>
-        <View style={styles.wordListContainer}>
-         {/* <BookList store={globalState} />*/}
-        </View>
+        {!temp && <View style={styles.wordListContainer}>
+          
+          <BookList store={globalState} />
+         </View>
+         }
+        {temp &&  <View style={styles.wordListContainer}>
+          <CalibrationList store={globalState} activeWindowSelected ={(wordRect) => {console.log(JSON.stringify(wordRect))}} />
+          </View>
+         }
       </View>
       <View style={styles.footer}>
         <Text style={styles.footerTitle}>ZeroGravity Kidz</Text>
