@@ -25,11 +25,11 @@ const scanItemTypes = {
 
 const iconProps = {
   superIcon: {
-    size: 20,
+    size: 10,
     color: '#005773',
   },
   mainIcon: {
-    size: 50,
+    size: 30,
     color: 'ivory',
   },
 };
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    width: 80,
+    width: 65,
   },
   iconHolders: {
     flex: 1,
@@ -95,8 +95,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 1,
     opacity: 1,
-    marginTop: 45,
-    marginLeft: 20,
+    marginTop: 30,
+    marginLeft: 10,
   },
   mainIconContainer: {
     position: 'absolute',
