@@ -43,11 +43,7 @@ const styles = StyleSheet.create({
 export default function BookList({store}) {
   bookData = store.bookList.array();
 
-  //if (bookData.Length > 0) {
   [selectedTabName, setSelectedTabName] = useState(bookData[0].name);
-  //} else {
-  //[selectedTabName, setSelectedTabName] = useState('');
-  // }
 
   return (
     <View style={{flex: 1}}>
