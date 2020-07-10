@@ -12,12 +12,29 @@ function okCB() {
 }
 
 var db = openDatabase(
-  {name: 'kidzreadz.sqlite', createFromLocation: 1},
+  {name: 'kr_1.sqlite', createFromLocation: 1},
   okCB,
   errorCB,
 );
 
 class PersistData {
+  async cleanDb() {
+    return; //This is only for testing.
+    db.transaction(function(tx) {
+      tx.executeSql('DELETE from bookwords', [], (_tx, results) => {
+        console.log('BookWords Deleted written =>', results.rowsAffected);
+
+        tx.executeSql('DELETE from words', [], (__tx, results) => {
+          console.log('words Deleted written =>', results.rowsAffected);
+
+          tx.executeSql('DELETE from books', [], (__tx, results) => {
+            console.log('books Deleted written =>', results.rowsAffected);
+          });
+        });
+      });
+    });
+  }
+
   async addBook(book) {
     db.transaction(function(tx) {
       tx.executeSql(
@@ -33,17 +50,20 @@ class PersistData {
   async addWord(word, book) {
     db.transaction(function(tx) {
       tx.executeSql(
-        'INSERT INTO words (word, meaning, audio) VALUES (?, ?, ?)',
-        [word.name, word.meaning, word.audio],
+        'INSERT INTO words (word, definition, audio) VALUES (?, ?, ?)',
+        [word.name, word.meaning, word.audiourl],
         (_tx, results) => {
           console.log('Words Written =>', results.rowsAffected);
           tx.executeSql(
             'INSERT INTO bookwords (book, word) VALUES (?, ?)',
-            [book.name, book.name],
+            [book.name, word.name],
             (__tx, _results) => {
-              console.log('BookWords writter =>', _results.rowsAffected);
+              console.log('BookWords written =>', _results.rowsAffected);
             },
           );
+        },
+        function(error) {
+          console.log('Error ' + JSON.stringify(error));
         },
       );
     });
@@ -97,16 +117,19 @@ class PersistData {
             books.add(book);
           }
           txn.executeSql(
-            'SELECT * FROM Bookwords inner join words on bookwords.word = words.word',
+            'SELECT * FROM words LEFT OUTER join bookwords on bookwords.word = words.word',
             [],
             function(wordtx, wordres) {
+              console.log('read words ' + wordres.rows.length);
               if (wordres.rows.length !== 0) {
                 for (let j = 0; j < res.rows.length; ++j) {
+                  console.log(wordres.rows.item(j));
                   let word = new Word(
                     wordres.rows.item(j).word,
-                    wordres.rows.item(j).meaning,
+                    wordres.rows.item(j).definition,
                     wordres.rows.item(j).audio,
                   );
+                  console.log(JSON.stringify(word));
                   books.getBook(wordres.rows.item(j).book).addWord(word);
                 }
               }
