@@ -4,11 +4,11 @@ import {Word} from './word';
 import {Books} from './books';
 
 function errorCB(err) {
-  console.log("SQL Error: " + err);
+  console.log('SQL Error: ' + err);
 }
 
 function okCB() {
-  console.log("SQL success");
+  console.log('SQL success');
 }
 
 var db = openDatabase(
