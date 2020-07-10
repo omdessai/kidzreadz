@@ -8,7 +8,7 @@ function errorCB(err) {
 }
 
 function okCB() {
-  console.log('SQL success');
+  //console.log('SQL success');
 }
 
 var db = openDatabase(
