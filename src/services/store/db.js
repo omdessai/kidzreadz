@@ -19,7 +19,7 @@ var db = openDatabase(
 
 class PersistData {
   async cleanDb() {
-    return; //This is only for testing.
+    //return; //This is only for testing.
     db.transaction(function(tx) {
       tx.executeSql('DELETE from bookwords', [], (_tx, results) => {
         console.log('BookWords Deleted written =>', results.rowsAffected);
@@ -41,7 +41,7 @@ class PersistData {
         'INSERT INTO books (book) VALUES (?)',
         [book.name],
         (_tx, results) => {
-          console.log('Books written =>', results.rowsAffected);
+          //console.log('Books written =>', results.rowsAffected);
         },
       );
     });
@@ -53,12 +53,12 @@ class PersistData {
         'INSERT INTO words (word, definition, audio) VALUES (?, ?, ?)',
         [word.name, word.meaning, word.audiourl],
         (_tx, results) => {
-          console.log('Words Written =>', results.rowsAffected);
+          //console.log('Words Written =>', results.rowsAffected);
           tx.executeSql(
             'INSERT INTO bookwords (book, word) VALUES (?, ?)',
             [book.name, word.name],
             (__tx, _results) => {
-              console.log('BookWords written =>', _results.rowsAffected);
+              //console.log('BookWords written =>', _results.rowsAffected);
             },
           );
         },
@@ -79,7 +79,7 @@ class PersistData {
             'INSERT INTO preferences (key, value) VALUES (?, ?)',
             [key, JSON.stringify(settingsObj)],
             (__tx, _results) => {
-              console.log('Preferences Written =>', _results.rowsAffected);
+              //console.log('Preferences Written =>', _results.rowsAffected);
             },
           );
         },
@@ -120,20 +120,20 @@ class PersistData {
             'SELECT * FROM words LEFT OUTER join bookwords on bookwords.word = words.word',
             [],
             function(wordtx, wordres) {
-              console.log('read words ' + wordres.rows.length);
+              //console.log('read words ' + wordres.rows.length);
               if (wordres.rows.length !== 0) {
                 for (let j = 0; j < res.rows.length; ++j) {
-                  console.log(wordres.rows.item(j));
+                  //console.log(wordres.rows.item(j));
                   let word = new Word(
                     wordres.rows.item(j).word,
                     wordres.rows.item(j).definition,
                     wordres.rows.item(j).audio,
                   );
-                  console.log(JSON.stringify(word));
+                  //console.log(JSON.stringify(word));
                   books.getBook(wordres.rows.item(j).book).addWord(word);
                 }
               }
-              cb(books);
+              cb(books); //no words
             },
             function(wordTx, error) {
               console.log('Error ' + error);
@@ -141,6 +141,7 @@ class PersistData {
             },
           );
         }
+        cb(books); //no books
       });
     });
   }
