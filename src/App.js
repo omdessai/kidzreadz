@@ -49,17 +49,12 @@ const styles = StyleSheet.create({
   },
 });
 
-let bk = new Book('My Word List', 'list');
-let books = new Books();
-books.add(bk);
-
 rectOfInterest = {xinit: 90, xend: 130, yinit: 90, yend: 140};
-
 const initialState = {
-  bookList: books,
-  activeBook: bk,
+  bookList: {},
+  activeBook: {},
   calibrationText: [],
-  preferences: {rectOfInterest: rectOfInterest}, //user preferences
+  preferences: [], //user preferences
 };
 
 const actions = {
@@ -84,91 +79,127 @@ const actions = {
     let newObj = {calibrationText: calibrationList};
     store.setState({...store.state, ...newObj});
   },
+
+  initDataFromDb: (store, bookList, dbsettings) => {
+
+    //console.log('initDataFromDb => state ' + JSON.stringify(store));  
+    //console.log('initDataFromDb => booklst ' + JSON.stringify(booklst));  
+    //console.log('initDataFromDb => dbsettings ' + JSON.stringify(dbsettings));    
+
+    var rectOfInterestExists = false;
+    for (idx in dbsettings) {
+      if (dbsettings[idx].key === 'rectOfInterest') {
+        rectOfInterestExists = true;
+        break;
+      }
+    }
+    if (!rectOfInterestExists) {
+      dbsettings.push(rectOfInterest);
+    }
+
+    let newState = {bookList: bookList, activeBook: bookList.array()[0],
+      preferences: dbsettings, calibrationText: []};
+
+
+
+    store.setState({...store.state, ...newState});
+
+  },
 };
 
 testDb = () => {
   console.log("in test db");
   let test = new PersistData();
+
+  //test.cleanDb();
+  //return;
+
   /*
   test.getPreferences('calibrations', (settings) => {console.log(JSON.stringify(settings));});
   test.addPreferences('calibrations', {x:1, y:1, z:1, w:2});
   test.getPreferences('calibrations', (settings) => {console.log(JSON.stringify(settings));});
 */
-console.log("===> in test db - connected");
-  var bks = new Books();
-  test.getBooksAndWords(bks, () => {console.log(JSON.stringify(bks))});
+  console.log('===> in test db - connected');
+  test.getBooksAndWords(() => {
+    console.log(JSON.stringify(bks));
+  });
   let bk1 = new Book('A1');
   let bk2 = new Book('A2');
   let bk3 = new Book('A3');
 
-  test.addBook(bk1);
-  test.addBook(bk2);
-  test.addBook(bk3);
+  //test.addBook(bk1);
+  //test.addBook(bk2);
+  //test.addBook(bk3);
 
   let wd1 = new Word('W1', 'M1', 'a1.mp3');
   let wd2 = new Word('W2', 'M2', 'a2.mp3');
-  let wd3 = new Word('W2', 'M3', 'a3.mp3');
-  let wd4 = new Word('W3', 'M4', 'a4.mp3');
-  let wd5 = new Word('W4', 'M5', 'a5.mp3');
+  let wd3 = new Word('W3', 'M3', 'a3.mp3');
+  let wd4 = new Word('W4', 'M4', 'a4.mp3');
+  let wd5 = new Word('W5', 'M5', 'a5.mp3');
 
-
-  test.addWord(wd1, bk1);
-  test.addWord(wd2, bk1);
-  test.addWord(wd3, bk2);
-  test.addWord(wd4, bk3);
-  test.addWord(wd5, bk3);
-  test.getBooksAndWords(bks, () => {console.log(JSON.stringify(bks))});
+  console.log('adding words');
+  //test.addWord(wd1, bk1);
+  //test.addWord(wd2, bk1);
+  //test.addWord(wd3, bk2);
+  //test.addWord(wd4, bk3);
+  //test.addWord(wd5, bk3);
+  //test.getBooksAndWords(bks, () => {console.log(JSON.stringify(bks))});
 };
 
-LoadData = (cb) => {
+LoadData = cb => {
   var db = new PersistData();
-  db.getPreferences((preferences) => {
-    console.log(JSON.stringify(preferences));
-    db.getBooksAndWords((bks) => {
-      console.log(JSON.stringify(bks));
-      cb();
-    } );
-  })
+  //db.cleanDb();
+  db.getPreferences(preferences => {
+    //console.log(JSON.stringify(preferences));
+    db.getBooksAndWords(bks => {
+      //console.log(JSON.stringify(bks));
+      cb(preferences, bks);
+    });
+  });
+};
 
-
-}
+const useGlobal = globalHook(React, initialState, actions);
 
 const App: () => React$Node = () => {
   [appDataLoaded, setappDataLoaded] = useState(false);
+  [appDataLoading, setappDataLoading] = useState(false);
+  const [globalState, globalActions] = useGlobal();
 
-  if(!appDataLoaded){
-  (function loadDbData(){
-    setTimeout(() =>{
-      LoadData(() => {
-        setappDataLoaded(true);
-      })
-    }, 0);
-  })();
-}
+  console.log('App Loading => ' + appDataLoading + '\n' + JSON.stringify(globalState));
 
-  //loadDbData();
-
+  if (!appDataLoading) {
+    setappDataLoading(true);
+    (function loadDbData() {
+      setTimeout(() => {
+        LoadData((preferences, booklist) => {
+          globalActions.initDataFromDb(booklist, preferences);
+          setappDataLoaded(true);
+        });
+      }, 0);
+    })();
+  }
   return (
-    
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>KidzReadz</Text>
       </View>
       <View style={styles.bodyContainer}>
-      {!appDataLoaded && <Text>Loading</Text>}
-      {appDataLoaded && <DelayedApp></DelayedApp>}
+        {!appDataLoaded && <Text>Loading</Text>}
+        {appDataLoaded && (
+          <DelayedApp globalState={globalState} globalActions={globalActions} />
+        )}
       </View>
       <View style={styles.footer}>
         <Text style={styles.footerTitle}>ZeroGravity Kidz</Text>
       </View>
     </View>
-    );
+  );
 }
 
-const useGlobal = globalHook(React, initialState, actions);
 
-const DelayedApp = () => {
-  const [globalState, globalActions] = useGlobal();
+const DelayedApp = (globalState, globalActions) => {
+
+  console.log('DelayedApp ' + JSON.stringify(globalState));
 
   [calibrationMode, setcalibrationMode] = useState(false);
 
@@ -196,36 +227,41 @@ const DelayedApp = () => {
   };
 
   return (
-
-      <View  style={styles.bodyContainer}>
-        <View style={styles.previewContainer}>
-          <Scanner
-            onTextSelected={(text, isTitle) => {
-              console.log('discovered text ' + text);
-              if (isTitle) {
-                globalActions.addBook(new Book(text));
-              } else {
-                wordDiscovered(text);
-              }
-            }}
-            onCalibrationChanged={mode => {
-              setcalibrationMode(mode);
-            }}
-            onCalibrationTextChanged={wordList => {
-              globalActions.addCalibrationList(wordList);
+    <View style={styles.bodyContainer}>
+      <View style={styles.previewContainer}>
+        <Scanner
+          onTextSelected={(text, isTitle) => {
+            console.log('discovered text ' + text);
+            if (isTitle) {
+              globalActions.addBook(new Book(text));
+            } else {
+              wordDiscovered(text);
+            }
+          }}
+          onCalibrationChanged={mode => {
+            setcalibrationMode(mode);
+          }}
+          onCalibrationTextChanged={wordList => {
+            globalActions.addCalibrationList(wordList);
+          }}
+        />
+      </View>
+      {!calibrationMode && (
+        <View style={styles.wordListContainer}>
+          <BookList store={globalState} />
+        </View>
+      )}
+      {calibrationMode && (
+        <View style={styles.wordListContainer}>
+          <CalibrationList
+            store={globalState}
+            activeWindowSelected={wordRect => {
+              console.log(JSON.stringify(wordRect));
             }}
           />
         </View>
-        {!calibrationMode && <View style={styles.wordListContainer}>
-          
-          <BookList store={globalState} />
-         </View>
-         }
-        {calibrationMode &&  <View style={styles.wordListContainer}>
-          <CalibrationList store={globalState} activeWindowSelected ={(wordRect) => {console.log(JSON.stringify(wordRect))}} />
-          </View>
-         }
-      </View>
+      )}
+    </View>
   );
 };
 
