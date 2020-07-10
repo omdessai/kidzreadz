@@ -1,55 +1,55 @@
 {
   "images" : [
     {
-      "filename" : "KidzReadzLogo40x40.png",
+      "filename" : "KR_Logo40x40.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "20x20"
     },
     {
-      "filename" : "KidzReadzLogo60x60.png",
+      "filename" : "KR_Logo60x60.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "20x20"
     },
     {
-      "filename" : "KidzReadzLogo58x58.png",
+      "filename" : "KR_Logo58x58.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "29x29"
     },
     {
-      "filename" : "KidzReadzLogo87x87.png",
+      "filename" : "KR_Logo87x87.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "29x29"
     },
     {
-      "filename" : "KidzReadzLogo80x80.png",
+      "filename" : "KR_Logo80x80.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "40x40"
     },
     {
-      "filename" : "KidzReadzLogo120x120-1.png",
+      "filename" : "KR_Logo120x120.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "40x40"
     },
     {
-      "filename" : "KidzReadzLogo120x120.png",
+      "filename" : "KR_Logo120x120-1.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "60x60"
     },
     {
-      "filename" : "KidzReadzLogo180x180.png",
+      "filename" : "KR_Logo180x180.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "60x60"
     },
     {
-      "filename" : "KidzReadzLogo 21024x1024.png",
+      "filename" : "KR_Logo.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"
