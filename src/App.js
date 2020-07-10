@@ -195,7 +195,6 @@ const App: () => React$Node = () => {
 
 const DelayedApp = ({gState, globalActions}) => {
 
-  //console.log('DelayedApp ' + JSON.stringify(gState));
 
   [calibrationMode, setcalibrationMode] = useState(false);
 
