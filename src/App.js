@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
 
 rectOfInterest = {xinit: 90, xend: 130, yinit: 90, yend: 140};
 const initialState = {
-  bookList: {},
+  books: {},
   activeBook: {},
   calibrationText: [],
   preferences: [], //user preferences
@@ -97,12 +97,13 @@ const actions = {
       dbsettings.push(rectOfInterest);
     }
 
-    let newState = {bookList: bookList, activeBook: bookList.array()[0],
+    let newState = {books: bookList, activeBook: bookList.array()[0],
       preferences: dbsettings, calibrationText: []};
 
 
-
+      console.log('BEFORE => ' + JSON.stringify(store.state));
     store.setState({...store.state, ...newState});
+    console.log('AFTER =>' + JSON.stringify(store.state));
 
   },
 };
@@ -165,7 +166,7 @@ const App: () => React$Node = () => {
   [appDataLoading, setappDataLoading] = useState(false);
   const [globalState, globalActions] = useGlobal();
 
-  console.log('App Loading => ' + appDataLoading + '\n' + JSON.stringify(globalState));
+  //console.log('App Loading => ' + appDataLoading + '\n' + JSON.stringify(globalState));
 
   if (!appDataLoading) {
     setappDataLoading(true);
