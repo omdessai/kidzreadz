@@ -3,7 +3,19 @@ import {Book} from './book';
 import {Word} from './word';
 import {Books} from './books';
 
-var db = openDatabase({name: 'kidzreadz.sqlite', createFromLocation: 1});
+function errorCB(err) {
+  console.log("SQL Error: " + err);
+}
+
+function okCB() {
+  console.log("SQL success");
+}
+
+var db = openDatabase(
+  {name: 'kidzreadz.sqlite', createFromLocation: 1},
+  okCB,
+  errorCB,
+);
 
 class PersistData {
   async addBook(book) {
@@ -80,14 +92,12 @@ class PersistData {
     db.transaction(function(txn) {
       txn.executeSql('SELECT * FROM books', [], function(tx, res) {
         if (res.rows.length !== 0) {
-          console.log('getBooksAndWords' + res.rows.length);
           for (let i = 0; i < res.rows.length; i++) {
-            console.log(res.rows.item(i));
             let book = new Book(res.rows.item(i).book);
-            books.addBook(book);
+            books.add(book);
           }
           txn.executeSql(
-            'SELECT word, book, definition, audio FROM Bookwords inner join words on bookwords.word = words.word',
+            'SELECT * FROM Bookwords inner join words on bookwords.word = words.word',
             [],
             function(wordtx, wordres) {
               if (wordres.rows.length !== 0) {
@@ -100,7 +110,11 @@ class PersistData {
                   books.getBook(wordres.rows.item(j).book).addWord(word);
                 }
               }
-              if (cb) cb(books);
+              cb(books);
+            },
+            function(wordTx, error) {
+              console.log('Error ' + error);
+              cb(books);
             },
           );
         }
