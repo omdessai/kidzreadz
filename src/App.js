@@ -53,10 +53,13 @@ let bk = new Book('My Word List', 'list');
 let books = new Books();
 books.add(bk);
 
+rectOfInterest = {xinit: 90, xend: 130, yinit: 90, yend: 140};
+
 const initialState = {
   bookList: books,
   activeBook: bk,
   calibrationText: [],
+  preferences: {rectOfInterest: rectOfInterest}, //user preferences
 };
 
 const actions = {
@@ -117,18 +120,58 @@ console.log("===> in test db - connected");
   test.getBooksAndWords(bks, () => {console.log(JSON.stringify(bks))});
 };
 
-//testDb();
+LoadData = (cb) => {
+  var db = new PersistData();
+  db.getPreferences((preferences) => {
+    console.log(JSON.stringify(preferences));
+    db.getBooksAndWords((bks) => {
+      console.log(JSON.stringify(bks));
+      cb();
+    } );
+  })
+
+
+}
+
+const App: () => React$Node = () => {
+  [appDataLoaded, setappDataLoaded] = useState(false);
+
+  if(!appDataLoaded){
+  (function loadDbData(){
+    setTimeout(() =>{
+      LoadData(() => {
+        setappDataLoaded(true);
+      })
+    }, 0);
+  })();
+}
+
+  //loadDbData();
+
+  return (
+    
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>KidzReadz</Text>
+      </View>
+      <View style={styles.bodyContainer}>
+      {!appDataLoaded && <Text>Loading</Text>}
+      {appDataLoaded && <DelayedApp></DelayedApp>}
+      </View>
+      <View style={styles.footer}>
+        <Text style={styles.footerTitle}>ZeroGravity Kidz</Text>
+      </View>
+    </View>
+    );
+}
 
 const useGlobal = globalHook(React, initialState, actions);
 
-const App: () => React$Node = () => {
+const DelayedApp = () => {
   const [globalState, globalActions] = useGlobal();
-  //testDb();
 
   [calibrationMode, setcalibrationMode] = useState(false);
-  nonCalibMode = !calibrationMode;
 
-  [temp, settemp] = useState(false);
   wordDiscovered = async text => {
     webster = new Webster();
     definition = await webster.lookup(text);
@@ -153,11 +196,8 @@ const App: () => React$Node = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>KidzReadz</Text>
-      </View>
-      <View style={styles.bodyContainer}>
+
+      <View  style={styles.bodyContainer}>
         <View style={styles.previewContainer}>
           <Scanner
             onTextSelected={(text, isTitle) => {
@@ -170,27 +210,22 @@ const App: () => React$Node = () => {
             }}
             onCalibrationChanged={mode => {
               setcalibrationMode(mode);
-              settemp(mode);
             }}
             onCalibrationTextChanged={wordList => {
               globalActions.addCalibrationList(wordList);
             }}
           />
         </View>
-        {!temp && <View style={styles.wordListContainer}>
+        {!calibrationMode && <View style={styles.wordListContainer}>
           
           <BookList store={globalState} />
          </View>
          }
-        {temp &&  <View style={styles.wordListContainer}>
+        {calibrationMode &&  <View style={styles.wordListContainer}>
           <CalibrationList store={globalState} activeWindowSelected ={(wordRect) => {console.log(JSON.stringify(wordRect))}} />
           </View>
          }
       </View>
-      <View style={styles.footer}>
-        <Text style={styles.footerTitle}>ZeroGravity Kidz</Text>
-      </View>
-    </View>
   );
 };
 

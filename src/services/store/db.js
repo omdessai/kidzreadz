@@ -1,6 +1,7 @@
 import {openDatabase} from 'react-native-sqlite-storage';
 import {Book} from './book';
 import {Word} from './word';
+import {Books} from './books';
 
 var db = openDatabase({name: 'kidzreadz.sqlite', createFromLocation: 1});
 
@@ -49,33 +50,41 @@ class PersistData {
               console.log('Preferences Written =>', _results.rowsAffected);
             },
           );
-        });
-    });
-  }
-
-  async getPreferences(key, cb) {
-    db.transaction(function(txn) {
-      txn.executeSql(
-        'SELECT value FROM preferences where key =?',
-        [key],
-        function(tx, res) {
-          if (res.rows.length !== 0) {
-            cb(JSON.parse(res.rows.item(0).VALUE));
-          }
         },
       );
     });
   }
 
-  async getBooksAndWords(books, cb) {
+  async getPreferences(cb) {
+    var preferences = [];
+    db.transaction(function(txn) {
+      txn.executeSql('SELECT key, value FROM preferences', [], function(
+        tx,
+        res,
+      ) {
+        if (res.rows.length !== 0) {
+          for (let j = 0; j < res.rows.length; ++j) {
+            preferences.push({
+              key: res.rows.item(j).KEY,
+              value: res.rows.item(j).VALUE,
+            });
+          }
+        }
+        cb(preferences);
+      });
+    });
+  }
+
+  async getBooksAndWords(cb) {
+    var books = new Books();
     db.transaction(function(txn) {
       txn.executeSql('SELECT * FROM books', [], function(tx, res) {
         if (res.rows.length !== 0) {
           console.log('getBooksAndWords' + res.rows.length);
           for (let i = 0; i < res.rows.length; i++) {
-            console.log(res.rows.item(i))
+            console.log(res.rows.item(i));
             let book = new Book(res.rows.item(i).book);
-            //books.addBook(book);
+            books.addBook(book);
           }
           txn.executeSql(
             'SELECT word, book, definition, audio FROM Bookwords inner join words on bookwords.word = words.word',
@@ -91,11 +100,10 @@ class PersistData {
                   books.getBook(wordres.rows.item(j).book).addWord(word);
                 }
               }
-              if (cb) cb();
+              if (cb) cb(books);
             },
           );
         }
-        
       });
     });
   }
