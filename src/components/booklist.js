@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
 });
 
 export default function BookList({store}) {
-  bookData = store.bookList.array();
+  bookData = store.books.array();
 
   [selectedTabName, setSelectedTabName] = useState(bookData[0].name);
 

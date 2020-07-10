@@ -101,10 +101,7 @@ const actions = {
       preferences: dbsettings, calibrationText: []};
 
 
-      console.log('BEFORE => ' + JSON.stringify(store.state));
     store.setState({...store.state, ...newState});
-    console.log('AFTER =>' + JSON.stringify(store.state));
-
   },
 };
 
@@ -166,8 +163,6 @@ const App: () => React$Node = () => {
   [appDataLoading, setappDataLoading] = useState(false);
   const [globalState, globalActions] = useGlobal();
 
-  //console.log('App Loading => ' + appDataLoading + '\n' + JSON.stringify(globalState));
-
   if (!appDataLoading) {
     setappDataLoading(true);
     (function loadDbData() {
@@ -187,7 +182,7 @@ const App: () => React$Node = () => {
       <View style={styles.bodyContainer}>
         {!appDataLoaded && <Text>Loading</Text>}
         {appDataLoaded && (
-          <DelayedApp globalState={globalState} globalActions={globalActions} />
+          <DelayedApp gState={globalState} globalActions={globalActions} />
         )}
       </View>
       <View style={styles.footer}>
@@ -198,9 +193,9 @@ const App: () => React$Node = () => {
 }
 
 
-const DelayedApp = (globalState, globalActions) => {
+const DelayedApp = ({gState, globalActions}) => {
 
-  console.log('DelayedApp ' + JSON.stringify(globalState));
+  //console.log('DelayedApp ' + JSON.stringify(gState));
 
   [calibrationMode, setcalibrationMode] = useState(false);
 
@@ -249,13 +244,13 @@ const DelayedApp = (globalState, globalActions) => {
       </View>
       {!calibrationMode && (
         <View style={styles.wordListContainer}>
-          <BookList store={globalState} />
+          <BookList store={gState} />
         </View>
       )}
       {calibrationMode && (
         <View style={styles.wordListContainer}>
           <CalibrationList
-            store={globalState}
+            store={gState}
             activeWindowSelected={wordRect => {
               console.log(JSON.stringify(wordRect));
             }}
