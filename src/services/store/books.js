@@ -1,7 +1,11 @@
+import {Book} from './book'
+
 class Books {
   constructor() {
+    let bk = new Book('My Word List', 'list');
     this.bookList = {}; //dictionary of books, key => name, item => book object
     this.bookArray = [];
+    this.add(bk);
   }
 
   list() {
@@ -17,7 +21,10 @@ class Books {
     this.bookArray.push(book);
   }
 
-  getBook(name){
+  getBook(name) {
+    if (!name || name === null) {
+      return this.bookArray[0];
+    }
     return this.bookList[name];
   }
 }
