@@ -53,11 +53,12 @@ const initialState = {
   books: {},
   activeBook: {},
   calibrationText: [],
-  preferences: [], //user preferences
+  preferences: {}, //user preferences
 };
 
 const actions = {
   addBook: (store, book) => {
+    console.log('addbook');
     const bookList = store.state.bookList;
     bookList.add(book);
     let newObj = {bookList: bookList};
@@ -65,6 +66,7 @@ const actions = {
   },
 
   addWord: (store, word) => {
+    console.log('addword');
     const bookList = store.state.bookList;
     let bookFromList = bookList.getBook(store.state.activeBook.name);
     if (bookFromList && bookFromList.addWord) {
@@ -75,20 +77,15 @@ const actions = {
   },
 
   addCalibrationList: (store, calibrationList) => {
+    console.log('addCalibrationList');
     let newObj = {calibrationText: calibrationList};
     store.setState({...store.state, ...newObj});
   },
 
   initDataFromDb: (store, bookList, dbsettings) => {
-    var rectOfInterestExists = false;
-    for (idx in dbsettings) {
-      if (dbsettings[idx].key === 'rectOfInterest') {
-        rectOfInterestExists = true;
-        break;
-      }
-    }
-    if (!rectOfInterestExists) {
-      dbsettings.push(rectOfInterest);
+    if (!dbsettings.rectOfInterest) {
+      console.log('initDataFromDb');
+      dbsettings.rectOfInterest = rectOfInterest;
     }
     let newState = {
       books: bookList,
@@ -97,6 +94,18 @@ const actions = {
       calibrationText: [],
     };
     store.setState({...store.state, ...newState});
+  },
+
+  setCalibrationWindow(store, rectOfInterestWindow) {
+    // console.log('Preferences '+ JSON.stringify(store.state.preferences) + ' rectOfInterestWindow ' +
+    // JSON.stringify(rectOfInterestWindow));
+    store.state.preferences.rectOfInterest =
+      rectOfInterestWindow.rectOfInterest;
+    // let newPreferencesObj = {...store.state.preferences, ...rectOfInterestWindow};
+    store.setState(store.state);
+    console.log(
+      'After update Preferences ' + JSON.stringify(store.state.preferences),
+    );
   },
 };
 
@@ -211,13 +220,12 @@ const App: () => React$Node = () => {
                   }
                 }}
                 onCalibrationChanged={mode => {
-                  console.log('calibration mode selected ' + mode);
                   setcalibMode(mode);
-                  settemp(true);
                 }}
                 onCalibrationTextChanged={wordList => {
                   globalActions.addCalibrationList(wordList);
                 }}
+                store={globalState}
               />
             </View>
             {!calibMode && (
@@ -231,6 +239,19 @@ const App: () => React$Node = () => {
                   store={globalState}
                   activeWindowSelected={wordRect => {
                     console.log(JSON.stringify(wordRect));
+                    let x = parseInt(wordRect.x);
+                    let y = parseInt(wordRect.y);
+                    var db = new PersistData();
+                    let newRectObj = {
+                      rectOfInterest: {
+                        xinit: x - 20,
+                        xend: x + 20,
+                        yinit: y - 10,
+                        yend: y + 10,
+                      },
+                    };
+                    db.addPreferences('rectOfInterest', newRectObj);
+                    globalActions.setCalibrationWindow(newRectObj);
                   }}
                 />
               </View>

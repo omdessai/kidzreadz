@@ -17,6 +17,7 @@ import * as Progress from 'react-native-progress';
 repetitionCount = 0;
 prevText = '';
 textConfirmRepetion = 1; //required to get atleast these repitions to confirm the text
+prevDate = Date.now();
 
 const scanItemTypes = {
   word: 'word',
@@ -179,6 +180,7 @@ function PreviewOn({
   textSelected,
   calibrationClicked,
   setCalibrationText,
+  store,
 }) {
   [scanItemType, setscanItemType] = useState(setScanItemType);
   [txtConfirmedState, settxtConfirmedState] = useState(false);
@@ -218,6 +220,15 @@ function PreviewOn({
   };
 
   onTextRecognized = (blocks, scanType) => {
+    nowDate = Date.now();
+    let diff = Date.now() - prevDate;
+    if (diff < 1000) {
+      //for reading stability only take action for more than 2 seconds
+      return;
+    }
+    prevDate = nowDate;
+    //console.log(store.preferences);
+
     if (blocks.textBlocks.length > 0) {
       wordList = [];
       allwords = [];
@@ -232,23 +243,28 @@ function PreviewOn({
                 height: comp.bounds.size.height,
                 weight: comp.bounds.size.weight,
               };
-              allwords.push(item);
+              if (
+                comp.value.length > 5 &&
+                !allwords.find(i => i.word === comp.value)
+              ) {
+                allwords.push(item);
+              }
               if (scanType === scanItemTypes.word) {
                 if (
-                  item.x > 90 &&
-                  item.x < 140 &&
-                  item.y > 90 &&
-                  item.y < 130
+                  item.x > store.preferences.rectOfInterest.xinit &&
+                  item.x < store.preferences.rectOfInterest.xend &&
+                  item.y > store.preferences.rectOfInterest.yinit &&
+                  item.y < store.preferences.rectOfInterest.yend
                 ) {
                   wordList.push(item);
                 }
               }
               if (scanType === scanItemTypes.title) {
                 if (
-                  item.x > 80 &&
-                  item.x < 180 &&
-                  item.y > 100 &&
-                  item.y < 160
+                  item.x > store.preferences.rectOfInterest.xinit - 10 &&
+                  item.x < store.preferences.rectOfInterest.xend + 10 &&
+                  item.y > store.preferences.rectOfInterest.yinit - 10 &&
+                  item.y < store.preferences.rectOfInterest.yend + 10
                 ) {
                   wordList.push(item);
                 }
@@ -509,6 +525,7 @@ export default function Scanner({
   onTextSelected,
   onCalibrationChanged,
   onCalibrationTextChanged,
+  store,
 }) {
   [previewVisibility, setpreviewVisibility] = useState(false);
   [scanItemType, setscanItemType] = useState(scanItemTypes.word);
@@ -546,6 +563,7 @@ export default function Scanner({
           setCalibrationText={text => {
             onCalibrationTextChanged(text);
           }}
+          store={store}
         />
       )}
     </>

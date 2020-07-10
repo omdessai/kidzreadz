@@ -88,7 +88,7 @@ class PersistData {
   }
 
   async getPreferences(cb) {
-    var preferences = [];
+    var preferences = {};
     db.transaction(function(txn) {
       txn.executeSql('SELECT key, value FROM preferences', [], function(
         tx,
@@ -96,10 +96,7 @@ class PersistData {
       ) {
         if (res.rows.length !== 0) {
           for (let j = 0; j < res.rows.length; ++j) {
-            preferences.push({
-              key: res.rows.item(j).KEY,
-              value: res.rows.item(j).VALUE,
-            });
+            preferences[res.rows.item(j).key] = JSON.parse(res.rows.item(j).value);
           }
         }
         cb(preferences);
