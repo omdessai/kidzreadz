@@ -140,7 +140,7 @@ class PersistData {
               //console.log('read words ' + wordres.rows.length);
               if (wordres.rows.length !== 0) {
                 for (let j = 0; j < wordres.rows.length; ++j) {
-                  console.log(wordres.rows.item(j));
+                  //console.log(wordres.rows.item(j));
                   let word = new Word(
                     wordres.rows.item(j).word,
                     wordres.rows.item(j).definition,
