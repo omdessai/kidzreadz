@@ -250,7 +250,7 @@ const App: () => React$Node = () => {
                         yend: y + 10,
                       },
                     };
-                    db.addPreferences('rectOfInterest', newRectObj);
+                    db.addPreferences('rectOfInterest', newRectObj.rectOfInterest);
                     globalActions.setCalibrationWindow(newRectObj);
                   }}
                 />

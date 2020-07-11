@@ -227,8 +227,6 @@ function PreviewOn({
       return;
     }
     prevDate = nowDate;
-    console.log(store.preferences);
-
     if (blocks.textBlocks.length > 0) {
       wordList = [];
       allwords = [];
