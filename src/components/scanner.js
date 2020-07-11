@@ -556,6 +556,7 @@ export default function Scanner({
           setScanItemType={scanItemType}
           previewStopClicked={() => {
             setpreviewVisibility(false);
+            onCalibrationChanged(false);
           }}
           calibrationClicked={calibrationMode => {
             onCalibrationChanged(calibrationMode);

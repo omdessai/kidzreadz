@@ -41,6 +41,14 @@ const styles = StyleSheet.create({
     color: 'green',
     backgroundColor: 'transparent',
   },
+  instructionText: {
+    fontSize: 20,
+    marginVertical: 2,
+    marginHorizontal: 5,
+    textAlign: 'center',
+    color: 'green',
+    backgroundColor: 'transparent',
+  },
   meaningWordText: {
     fontSize: 22,
     marginVertical: 2,
@@ -64,7 +72,12 @@ export default function CalibrationList({store, activeWindowSelected}) {
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={{flex: 1}}>
+      <View style={{flex: 1, margin: 2, backgroundColor: 'lightgrey'}}>
+        <Text style={styles.instructionText}>
+          Click on the word below that best matches the word in preview above.
+        </Text>
+      </View>
+      <SafeAreaView style={{flex: 2}}>
         <ScrollView indicatorStyle="black" style={{flex: 3}}>
           <TouchableWithoutFeedback>
             <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
