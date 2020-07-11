@@ -71,6 +71,7 @@ export default function CalibrationList({store, activeWindowSelected}) {
               {worddata.map((wordRect, index) => {
                 return (
                   <TouchableOpacity
+                    key={Math.random()}
                     onPress={() => {
                       setselectedText(wordRect);
                       activeWindowSelected(wordRect);

@@ -238,7 +238,7 @@ const App: () => React$Node = () => {
                 <CalibrationList
                   store={globalState}
                   activeWindowSelected={wordRect => {
-                    console.log(JSON.stringify(wordRect));
+                    //console.log(JSON.stringify(wordRect));
                     let x = parseInt(wordRect.x);
                     let y = parseInt(wordRect.y);
                     var db = new PersistData();
