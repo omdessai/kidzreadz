@@ -58,20 +58,21 @@ const initialState = {
 
 const actions = {
   addBook: (store, book) => {
-    console.log('addbook');
-    const bookList = store.state.bookList;
+    console.log('action => addbook');
+    const bookList = store.state.books;
     bookList.add(book);
-    let newObj = {bookList: bookList};
+    let newObj = {books: bookList};
     store.setState({...store.state, ...newObj});
   },
 
   addWord: (store, word) => {
-    console.log('addword');
-    const bookList = store.state.bookList;
+    console.log('action => addword');
+    const bookList = store.state.books;
+    console.log(JSON.stringify(store.state));
     let bookFromList = bookList.getBook(store.state.activeBook.name);
     if (bookFromList && bookFromList.addWord) {
       bookFromList.addWord(word);
-      let newObj = {bookList: bookList, activeBook: bookFromList};
+      let newObj = {books: bookList, activeBook: bookFromList};
       store.setState({...store.state, ...newObj});
     }
   },
@@ -84,7 +85,7 @@ const actions = {
 
   initDataFromDb: (store, bookList, dbsettings) => {
     if (!dbsettings.rectOfInterest) {
-      console.log('initDataFromDb');
+      console.log('action => initDataFromDb');
       dbsettings.rectOfInterest = rectOfInterest;
     }
     let newState = {
@@ -97,11 +98,8 @@ const actions = {
   },
 
   setCalibrationWindow(store, rectOfInterestWindow) {
-    // console.log('Preferences '+ JSON.stringify(store.state.preferences) + ' rectOfInterestWindow ' +
-    // JSON.stringify(rectOfInterestWindow));
     store.state.preferences.rectOfInterest =
       rectOfInterestWindow.rectOfInterest;
-    // let newPreferencesObj = {...store.state.preferences, ...rectOfInterestWindow};
     store.setState(store.state);
     console.log(
       'After update Preferences ' + JSON.stringify(store.state.preferences),
@@ -221,9 +219,14 @@ const App: () => React$Node = () => {
                 }}
                 onCalibrationChanged={mode => {
                   setcalibMode(mode);
+                  if (!mode) {
+                    globalActions.addCalibrationList([]);
+                  }
                 }}
                 onCalibrationTextChanged={wordList => {
-                  globalActions.addCalibrationList(wordList);
+                  if (calibMode) {
+                    globalActions.addCalibrationList(wordList);
+                  }
                 }}
                 store={globalState}
               />
@@ -250,7 +253,10 @@ const App: () => React$Node = () => {
                         yend: y + 10,
                       },
                     };
-                    db.addPreferences('rectOfInterest', newRectObj.rectOfInterest);
+                    db.addPreferences(
+                      'rectOfInterest',
+                      newRectObj.rectOfInterest,
+                    );
                     globalActions.setCalibrationWindow(newRectObj);
                   }}
                 />

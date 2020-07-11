@@ -104,6 +104,7 @@ export default function WordList({store}) {
               {worddata.map((word, index) => {
                 return (
                   <TouchableOpacity
+                    key={Math.random()}
                     onPress={() => {
                       selectWord(word);
                     }}>
