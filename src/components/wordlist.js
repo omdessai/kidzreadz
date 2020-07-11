@@ -71,8 +71,12 @@ export default function WordList({store}) {
   unselectedGradientColors = ['ivory', 'lightgrey'];
   selectedGradientColors = ['ivory', 'grey'];
   selectedWordName =
-    selectedWord && selectedWord.name.length > 0 && selectedWord.name
+    selectedWord && selectedWord.name && selectedWord.name.length > 0
       ? selectedWord.name
+      : store.activeWord &&
+        store.activeWord.name &&
+        store.activeWord.name.length > 0
+      ? store.activeWord.name
       : '';
 
   selectWord = word => {
@@ -147,6 +151,14 @@ export default function WordList({store}) {
             alignItems: 'center',
           }}>
           <Text style={styles.meaningWordText}>{meaning}</Text>
+          {meaning === '' &&
+            store.activeWord &&
+            store.activeWord.meaning &&
+            store.activeWord.meaning.length && (
+              <Text style={styles.meaningWordText}>
+                {store.activeWord.meaning}
+              </Text>)
+          }
         </View>
       </SafeAreaView>
     </View>

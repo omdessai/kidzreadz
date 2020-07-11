@@ -68,11 +68,14 @@ const actions = {
   addWord: (store, word) => {
     console.log('action => addword');
     const bookList = store.state.books;
-    console.log(JSON.stringify(store.state));
     let bookFromList = bookList.getBook(store.state.activeBook.name);
     if (bookFromList && bookFromList.addWord) {
       bookFromList.addWord(word);
-      let newObj = {books: bookList, activeBook: bookFromList};
+      let newObj = {
+        books: bookList,
+        activeBook: bookFromList,
+        activeWord: word,
+      };
       store.setState({...store.state, ...newObj});
     }
   },
