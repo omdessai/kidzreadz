@@ -222,7 +222,7 @@ function PreviewOn({
   onTextRecognized = (blocks, scanType) => {
     nowDate = Date.now();
     let diff = Date.now() - prevDate;
-    if (diff < 1000) {
+    if (diff < 1000 && scanType !== scanItemTypes.title) {
       //for reading stability only take action for more than 2 seconds
       return;
     }
