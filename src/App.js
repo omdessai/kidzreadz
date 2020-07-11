@@ -111,7 +111,7 @@ const actions = {
   setCalibrationWindow(store, rectOfInterestWindow) {
     store.state.preferences.rectOfInterest =
       rectOfInterestWindow.rectOfInterest;
-    db.addPreferences('rectOfInterest', newRectObj.rectOfInterest);
+    db.addPreferences('rectOfInterest', rectOfInterestWindow.rectOfInterest);
     store.setState(store.state);
     console.log(
       'After update Preferences ' + JSON.stringify(store.state.preferences),
