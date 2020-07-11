@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 
 export default function BookList({store}) {
   bookData = store.books.array();
-  console.log("Book data " + JSON.stringify(store));
+  //console.log("Book data " + JSON.stringify(store));
 
   [selectedTabName, setSelectedTabName] = useState(bookData[0].name);
 

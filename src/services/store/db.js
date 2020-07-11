@@ -30,9 +30,7 @@ class PersistData {
             [defaultBook.name],
             (_tx, results) => {},
           );
-          console.log('default book added');
         }
-        console.log('default book confirmed');
       });
     });
   }
