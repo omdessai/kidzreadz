@@ -67,6 +67,7 @@ class PersistData {
   }
 
   async addWord(word, book) {
+    //console.log('adding word to db '+ JSON.stringify(word) + ' ' + JSON.stringify(book));
     db.transaction(function(tx) {
       tx.executeSql(
         'INSERT INTO words (word, definition, audio) VALUES (?, ?, ?)',
@@ -140,8 +141,8 @@ class PersistData {
             function(wordtx, wordres) {
               //console.log('read words ' + wordres.rows.length);
               if (wordres.rows.length !== 0) {
-                for (let j = 0; j < res.rows.length; ++j) {
-                  //console.log(wordres.rows.item(j));
+                for (let j = 0; j < wordres.rows.length; ++j) {
+                  console.log(wordres.rows.item(j));
                   let word = new Word(
                     wordres.rows.item(j).word,
                     wordres.rows.item(j).definition,
