@@ -51,6 +51,15 @@ const styles = StyleSheet.create({
     color: 'olive',
     backgroundColor: 'transparent',
   },
+  instructionText: {
+    fontSize: 20,
+    marginVertical: 2,
+    marginHorizontal: 5,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: 'green',
+    backgroundColor: 'transparent',
+  },
 });
 
 export default function WordList({store}) {
@@ -81,6 +90,13 @@ export default function WordList({store}) {
 
   return (
     <View style={styles.container}>
+      {worddata.length <= 0 && (
+        <View style={{flex: 1, marginTop: 20, backgroundColor: 'lightgrey'}}>
+          <Text style={styles.instructionText}>
+            Click on the icon above and start scanning words for meaning.
+          </Text>
+        </View>
+      )}
       <SafeAreaView style={{flex: 1}}>
         <ScrollView indicatorStyle="black" style={{flex: 3}}>
           <TouchableWithoutFeedback>
