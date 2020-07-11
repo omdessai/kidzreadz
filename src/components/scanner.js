@@ -368,6 +368,7 @@ function PreviewOn({
                         onPress={() => {
                           calibrationClicked(!calibrationMode);
                           setcalibrationMode(!calibrationMode);
+                          setfirstTextIdentified(false);
                         }}>
                         <View
                           style={
