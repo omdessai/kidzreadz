@@ -17,18 +17,37 @@ var db = openDatabase(
   errorCB,
 );
 
+const defaultBook = {name: 'My Word List', icon: 'list'};
+
 class PersistData {
+  constructor() {
+    db.transaction(function(txn) {
+      txn.executeSql('SELECT * FROM books', [], function(tx, res) {
+        if (res.rows.length === 0) {
+          //create default book
+          txn.executeSql(
+            'INSERT INTO books (book) VALUES (?)',
+            [defaultBook.name],
+            (_tx, results) => {},
+          );
+          console.log('default book added');
+        }
+        console.log('default book confirmed');
+      });
+    });
+  }
+
   async cleanDb() {
     //return; //This is only for testing.
     db.transaction(function(tx) {
       tx.executeSql('DELETE from bookwords', [], (_tx, results) => {
         console.log('BookWords Deleted written =>', results.rowsAffected);
 
-        tx.executeSql('DELETE from words', [], (__tx, results) => {
-          console.log('words Deleted written =>', results.rowsAffected);
+        tx.executeSql('DELETE from words', [], (__tx, res1) => {
+          console.log('words Deleted written =>', res1.rowsAffected);
 
-          tx.executeSql('DELETE from books', [], (__tx, results) => {
-            console.log('books Deleted written =>', results.rowsAffected);
+          tx.executeSql('DELETE from books', [], (___tx, res2) => {
+            console.log('books Deleted written =>', res2.rowsAffected);
           });
         });
       });
@@ -96,7 +115,9 @@ class PersistData {
       ) {
         if (res.rows.length !== 0) {
           for (let j = 0; j < res.rows.length; ++j) {
-            preferences[res.rows.item(j).key] = JSON.parse(res.rows.item(j).value);
+            preferences[res.rows.item(j).key] = JSON.parse(
+              res.rows.item(j).value,
+            );
           }
         }
         cb(preferences);

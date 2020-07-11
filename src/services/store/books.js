@@ -1,24 +1,35 @@
-import {Book} from './book'
+import {Book} from './book';
+
+const defaultBook = {name: 'My Word List', icon: 'list'};
 
 class Books {
   constructor() {
-    let bk = new Book('My Word List', 'list');
     this.bookList = {}; //dictionary of books, key => name, item => book object
     this.bookArray = [];
-    this.add(bk);
   }
 
   list() {
     return this.bookList;
   }
 
-  array(){
+  array() {
     return this.bookArray;
   }
 
   async add(book) {
+    if (this.bookList[book.name]) {
+      return false;
+    }
+
     this.bookList[book.name] = book;
-    this.bookArray.push(book);
+
+    if (book.name === defaultBook.name) {
+      book.icon = 'list';
+      this.bookArray.unshift(book);
+    } else {
+      this.bookArray.push(book);
+    }
+    return true;
   }
 
   getBook(name) {

@@ -15,8 +15,12 @@ class Book {
   }
 
   addWord(word) {
+    if (this.wordList[word.name]) {
+      return false; //word already exists
+    }
     this.wordList[word.name] = word;
     this.wordArray.push(word);
+    return true;
   }
 }
 

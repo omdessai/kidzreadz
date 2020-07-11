@@ -56,13 +56,18 @@ const initialState = {
   preferences: {}, //user preferences
 };
 
+var db = new PersistData();
+
 const actions = {
   addBook: (store, book) => {
     console.log('action => addbook');
     const bookList = store.state.books;
-    bookList.add(book);
+    if (!bookList.add(book)) {
+      return;
+    }
     let newObj = {books: bookList};
     store.setState({...store.state, ...newObj});
+    db.addBook(book);
   },
 
   addWord: (store, word) => {
@@ -70,12 +75,15 @@ const actions = {
     const bookList = store.state.books;
     let bookFromList = bookList.getBook(store.state.activeBook.name);
     if (bookFromList && bookFromList.addWord) {
-      bookFromList.addWord(word);
+      if (!bookFromList.addWord(word)) {
+        return; //nothing to update
+      }
       let newObj = {
         books: bookList,
         activeBook: bookFromList,
         activeWord: word,
       };
+      db.addWord(word, bookFromList);
       store.setState({...store.state, ...newObj});
     }
   },
@@ -103,6 +111,7 @@ const actions = {
   setCalibrationWindow(store, rectOfInterestWindow) {
     store.state.preferences.rectOfInterest =
       rectOfInterestWindow.rectOfInterest;
+    db.addPreferences('rectOfInterest', newRectObj.rectOfInterest);
     store.setState(store.state);
     console.log(
       'After update Preferences ' + JSON.stringify(store.state.preferences),
@@ -112,27 +121,26 @@ const actions = {
 
 testDb = () => {
   console.log("in test db");
-  let test = new PersistData();
 
-  //test.cleanDb();
+  //db.cleanDb();
   //return;
 
   /*
-  test.getPreferences('calibrations', (settings) => {console.log(JSON.stringify(settings));});
-  test.addPreferences('calibrations', {x:1, y:1, z:1, w:2});
-  test.getPreferences('calibrations', (settings) => {console.log(JSON.stringify(settings));});
+  db.getPreferences('calibrations', (settings) => {console.log(JSON.stringify(settings));});
+  db.addPreferences('calibrations', {x:1, y:1, z:1, w:2});
+  db.getPreferences('calibrations', (settings) => {console.log(JSON.stringify(settings));});
 */
   console.log('===> in test db - connected');
-  test.getBooksAndWords(() => {
+  db.getBooksAndWords(() => {
     console.log(JSON.stringify(bks));
   });
   let bk1 = new Book('A1');
   let bk2 = new Book('A2');
   let bk3 = new Book('A3');
 
-  //test.addBook(bk1);
-  //test.addBook(bk2);
-  //test.addBook(bk3);
+  //db.addBook(bk1);
+  //db.addBook(bk2);
+  //db.addBook(bk3);
 
   let wd1 = new Word('W1', 'M1', 'a1.mp3');
   let wd2 = new Word('W2', 'M2', 'a2.mp3');
@@ -141,16 +149,15 @@ testDb = () => {
   let wd5 = new Word('W5', 'M5', 'a5.mp3');
 
   console.log('adding words');
-  //test.addWord(wd1, bk1);
-  //test.addWord(wd2, bk1);
-  //test.addWord(wd3, bk2);
-  //test.addWord(wd4, bk3);
-  //test.addWord(wd5, bk3);
-  //test.getBooksAndWords(bks, () => {console.log(JSON.stringify(bks))});
+  //db.addWord(wd1, bk1);
+  //db.addWord(wd2, bk1);
+  //db.addWord(wd3, bk2);
+  //db.addWord(wd4, bk3);
+  //db.addWord(wd5, bk3);
+  //db.getBooksAndWords(bks, () => {console.log(JSON.stringify(bks))});
 };
 
 LoadData = cb => {
-  var db = new PersistData();
   db.getPreferences(preferences => {
     db.getBooksAndWords(bks => {
       cb(preferences, bks);
@@ -247,7 +254,6 @@ const App: () => React$Node = () => {
                     //console.log(JSON.stringify(wordRect));
                     let x = parseInt(wordRect.x);
                     let y = parseInt(wordRect.y);
-                    var db = new PersistData();
                     let newRectObj = {
                       rectOfInterest: {
                         xinit: x - 20,
@@ -256,10 +262,6 @@ const App: () => React$Node = () => {
                         yend: y + 10,
                       },
                     };
-                    db.addPreferences(
-                      'rectOfInterest',
-                      newRectObj.rectOfInterest,
-                    );
                     globalActions.setCalibrationWindow(newRectObj);
                   }}
                 />
