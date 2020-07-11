@@ -77,7 +77,7 @@ const actions = {
   },
 
   addCalibrationList: (store, calibrationList) => {
-    console.log('addCalibrationList');
+    //console.log('addCalibrationList');
     let newObj = {calibrationText: calibrationList};
     store.setState({...store.state, ...newObj});
   },
