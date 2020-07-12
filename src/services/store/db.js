@@ -20,6 +20,7 @@ var db = openDatabase(
 
 class PersistData {
   constructor() {
+    console.log('PersistData constructor');
     db.transaction(function(txn) {
       txn.executeSql('SELECT * FROM books', [], function(tx, res) {
         if (res.rows.length === 0) {

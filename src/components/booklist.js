@@ -7,8 +7,10 @@ import {
   Text,
   FlatList,
   SafeAreaView,
+  Animated,
 } from 'react-native';
-
+import { RectButton } from "react-native-gesture-handler";
+import Swipeable from "react-native-gesture-handler/Swipeable";
 import React, {useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';

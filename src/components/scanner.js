@@ -1,13 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable react-native/no-inline-styles */
 import {RNCamera} from 'react-native-camera';
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Text,
-  TextInput,
-} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -18,11 +12,6 @@ repetitionCount = 0;
 prevText = '';
 textConfirmRepetion = 1; //required to get atleast these repitions to confirm the text
 prevDate = Date.now();
-
-const scanItemTypes = {
-  word: 'word',
-  title: 'title',
-};
 
 const iconProps = {
   superIcon: {
@@ -55,17 +44,6 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     margin: 10,
   },
-  titleRectangleColor: {
-    flex: 1,
-    marginTop: 110,
-    marginLeft: 70,
-    position: 'absolute',
-    height: 100,
-    width: 220,
-    borderRadius: 25,
-    borderWidth: 3,
-    margin: 10,
-  },
   buttonContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -74,7 +52,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    width: 65,
+    width: 55,
   },
   iconHolders: {
     flex: 1,
@@ -96,7 +74,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 1,
     opacity: 1,
-    marginTop: 30,
+    marginTop: 20,
     marginLeft: 10,
   },
   mainIconContainer: {
@@ -110,7 +88,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function PreviewOff({titleScanClicked, wordScanClicked}) {
+function PreviewOff({wordScanClicked}) {
   return (
     <View style={{flex: 1}}>
       <View style={{flexGrow: 0.5}} />
@@ -120,28 +98,6 @@ function PreviewOff({titleScanClicked, wordScanClicked}) {
 
         <View style={{flexGrow: 0.7}}>
           <View style={{flex: 1, flexDirection: 'row'}}>
-            <View style={{flex: 1, alignItems: 'center', margin: 10}}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => titleScanClicked()}>
-                <View style={styles.iconHolders}>
-                  <View style={styles.superIconContainer}>
-                    <Icon
-                      name="camera"
-                      size={iconProps.superIcon.size}
-                      color={iconProps.superIcon.color}
-                    />
-                  </View>
-                  <View style={styles.mainIconContainer}>
-                    <Icon
-                      name="book"
-                      size={iconProps.mainIcon.size}
-                      color={iconProps.mainIcon.color}
-                    />
-                  </View>
-                </View>
-              </TouchableOpacity>
-            </View>
             <View style={{flex: 1, alignItems: 'center', margin: 10}}>
               <TouchableOpacity
                 style={styles.button}
@@ -176,23 +132,16 @@ function PreviewOff({titleScanClicked, wordScanClicked}) {
 
 function PreviewOn({
   previewStopClicked,
-  setScanItemType,
   textSelected,
   calibrationClicked,
   setCalibrationText,
   store,
 }) {
-  [scanItemType, setscanItemType] = useState(setScanItemType);
   [txtConfirmedState, settxtConfirmedState] = useState(false);
   [confirmedText, setconfirmedText] = useState('');
   [progressRepetionCount, setprogressRepetionCount] = useState(0);
   [firstTextIdentified, setfirstTextIdentified] = useState(false);
   [calibrationMode, setcalibrationMode] = useState(false);
-
-  onBookTitleSelected = () => {
-    textSelected(confirmedText, true);
-    setfirstTextIdentified(false);
-  };
 
   onTextConfirmed = text => {
     if (text !== prevText) {
@@ -214,15 +163,13 @@ function PreviewOn({
     }
     settxtConfirmedState(true);
     setconfirmedText(text); //confirmed at least required times
-    if (scanItemType === scanItemTypes.word) {
-      textSelected(text, false);
-    }
+    textSelected(text, false);
   };
 
-  onTextRecognized = (blocks, scanType) => {
+  onTextRecognized = blocks => {
     nowDate = Date.now();
     let diff = Date.now() - prevDate;
-    if (diff < 1000 && scanType !== scanItemTypes.title) {
+    if (diff < 1000) {
       //for reading stability only take action for more than 2 seconds
       return;
     }
@@ -247,25 +194,13 @@ function PreviewOn({
               ) {
                 allwords.push(item);
               }
-              if (scanType === scanItemTypes.word) {
-                if (
-                  item.x > store.preferences.rectOfInterest.xinit &&
-                  item.x < store.preferences.rectOfInterest.xend &&
-                  item.y > store.preferences.rectOfInterest.yinit &&
-                  item.y < store.preferences.rectOfInterest.yend
-                ) {
-                  wordList.push(item);
-                }
-              }
-              if (scanType === scanItemTypes.title) {
-                if (
-                  item.x > store.preferences.rectOfInterest.xinit - 10 &&
-                  item.x < store.preferences.rectOfInterest.xend + 10 &&
-                  item.y > store.preferences.rectOfInterest.yinit - 10 &&
-                  item.y < store.preferences.rectOfInterest.yend + 10
-                ) {
-                  wordList.push(item);
-                }
+              if (
+                item.x > store.preferences.rectOfInterest.xinit &&
+                item.x < store.preferences.rectOfInterest.xend &&
+                item.y > store.preferences.rectOfInterest.yinit &&
+                item.y < store.preferences.rectOfInterest.yend
+              ) {
+                wordList.push(item);
               }
             }
           });
@@ -275,45 +210,33 @@ function PreviewOn({
       if (calibrationMode) {
         return;
       }
-      if (scanType === scanItemTypes.word) {
-        wordOfInterest = wordList[0];
-        if (wordList.length > 1) {
-          tempWord = wordList[0];
-          for (idx in wordList) {
-            if (idx === 0) {
-              continue;
-            }
-            if (wordList[idx].x > wordOfInterest.x) {
-              wordOfInterest = wordList[idx];
-            }
-            if (wordList[idx].y > wordOfInterest.y) {
-              wordOfInterest = wordList[idx];
-            }
+      wordOfInterest = wordList[0];
+      if (wordList.length > 1) {
+        tempWord = wordList[0];
+        for (idx in wordList) {
+          if (idx === 0) {
+            continue;
           }
-        }
-        if (wordOfInterest) {
-          w = wordOfInterest.word.trim();
-          tokens = w.split(',');
-          if (tokens.length > 1) {
-            w = tokens[0];
+          if (wordList[idx].x > wordOfInterest.x) {
+            wordOfInterest = wordList[idx];
           }
-          tokens = w.split('.');
-          if (tokens.length > 1) {
-            w = tokens[0];
+          if (wordList[idx].y > wordOfInterest.y) {
+            wordOfInterest = wordList[idx];
           }
-          //set the selected word here:
-          onTextConfirmed(w);
         }
       }
-      if (scanType === scanItemTypes.title) {
-        wordList.sort((a, b) => {
-          return a.y - b.y;
-        });
-        title = '';
-        wordList.forEach(wordItem => {
-          title += wordItem.word + ' ';
-        });
-        onTextConfirmed(title.trim());
+      if (wordOfInterest) {
+        w = wordOfInterest.word.trim();
+        tokens = w.split(',');
+        if (tokens.length > 1) {
+          w = tokens[0];
+        }
+        tokens = w.split('.');
+        if (tokens.length > 1) {
+          w = tokens[0];
+        }
+        //set the selected word here:
+        onTextConfirmed(w);
       }
     }
   };
@@ -328,7 +251,7 @@ function PreviewOn({
         type={RNCamera.Constants.Type.back}
         flashMode={RNCamera.Constants.FlashMode.off}
         onTextRecognized={blocks => {
-          this.onTextRecognized(blocks, this.scanItemType);
+          this.onTextRecognized(blocks);
         }}
         autoFocus={RNCamera.Constants.AutoFocus.on}>
         {({camera, status, recordAudioPermissionStatus}) => {
@@ -338,7 +261,7 @@ function PreviewOn({
                 <View>
                   <View
                     style={{
-                      height: 65,
+                      height: 55,
                       flexDirection: 'row',
                       justifyContent: 'space-around',
                       alignItems: 'center',
@@ -386,51 +309,13 @@ function PreviewOn({
                         </View>
                       </TouchableOpacity>
                     </View>
-
                     <View>
                       <TouchableOpacity
                         style={styles.button}
                         onPress={() => {
-                          setscanItemType(scanItemTypes.title);
                           setfirstTextIdentified(false);
                         }}>
-                        <View
-                          style={
-                            scanItemType === scanItemTypes.title
-                              ? styles.iconHolders
-                              : styles.unselectedIconHolders
-                          }>
-                          <View style={styles.superIconContainer}>
-                            <Icon
-                              name="camera"
-                              size={iconProps.superIcon.size}
-                              color={iconProps.superIcon.color}
-                            />
-                          </View>
-                          <View style={styles.mainIconContainer}>
-                            <Icon
-                              name="book"
-                              size={iconProps.mainIcon.size}
-                              color={iconProps.mainIcon.color}
-                            />
-                          </View>
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-
-                    <View>
-                      <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => {
-                          setscanItemType(scanItemTypes.word);
-                          setfirstTextIdentified(false);
-                        }}>
-                        <View
-                          style={
-                            scanItemType === scanItemTypes.word
-                              ? styles.iconHolders
-                              : styles.unselectedIconHolders
-                          }>
+                        <View style={styles.iconHolders}>
                           <View style={styles.superIconContainer}>
                             <Icon
                               name="camera"
@@ -449,12 +334,7 @@ function PreviewOn({
                       </TouchableOpacity>
                     </View>
                   </View>
-                  {this.scanItemType === scanItemTypes.word && (
-                    <View style={styles.wordRectangleColor} />
-                  )}
-                  {this.scanItemType === scanItemTypes.title && (
-                    <View style={styles.titleRectangleColor} />
-                  )}
+                  <View style={styles.wordRectangleColor} />
                 </View>
 
                 {firstTextIdentified && (
@@ -477,35 +357,9 @@ function PreviewOn({
                           flexDirection: 'row',
                         }}>
                         <View style={{flex: 1, alignItems: 'center'}}>
-                          {scanItemType === scanItemTypes.word && (
-                            <Text style={styles.scannedText}>
-                              {confirmedText}
-                            </Text>
-                          )}
-                          {scanItemType === scanItemTypes.title && (
-                            <View style={{flexDirection: 'row'}}>
-                              <View>
-                                <TextInput style={styles.scannedText}>
-                                  {confirmedText}
-                                </TextInput>
-                              </View>
-                              {txtConfirmedState && (
-                                <View style={{marginLeft: 20}}>
-                                  <TouchableOpacity
-                                    style={{flex: 1}}
-                                    onPress={() => onBookTitleSelected()}>
-                                    <View>
-                                      <Ionicons
-                                        name="ios-add-circle"
-                                        size={25}
-                                        color={'white'}
-                                      />
-                                    </View>
-                                  </TouchableOpacity>
-                                </View>
-                              )}
-                            </View>
-                          )}
+                          <Text style={styles.scannedText}>
+                            {confirmedText}
+                          </Text>
                         </View>
                       </View>
                     </View>
@@ -527,7 +381,6 @@ export default function Scanner({
   store,
 }) {
   [previewVisibility, setpreviewVisibility] = useState(false);
-  [scanItemType, setscanItemType] = useState(scanItemTypes.word);
 
   onPreviewToggled = flag => {
     setpreviewVisibility(flag);
@@ -537,12 +390,7 @@ export default function Scanner({
     <>
       {!this.previewVisibility && (
         <PreviewOff
-          titleScanClicked={() => {
-            setscanItemType(scanItemTypes.title);
-            setpreviewVisibility(true);
-          }}
           wordScanClicked={() => {
-            setscanItemType(scanItemTypes.word);
             setpreviewVisibility(true);
           }}
         />
@@ -552,7 +400,6 @@ export default function Scanner({
           textSelected={(w, flag) => {
             onTextSelected(w, flag);
           }}
-          setScanItemType={scanItemType}
           previewStopClicked={() => {
             setpreviewVisibility(false);
             onCalibrationChanged(false);
