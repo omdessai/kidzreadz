@@ -57,10 +57,17 @@ class PersistData {
   async deleteBook(book) {
     db.transaction(function(tx) {
       tx.executeSql(
-        'DELETE from books where book =?',
+        'DELETE from words where word in (select word from bookwords where book=?)',
         [book.name],
         (_tx, results) => {
-          //console.log('BookWords Deleted written =>', results.rowsAffected);
+          console.log('BookWords Deleted for book  =>', results.rowsAffected);
+          tx.executeSql(
+            'DELETE from books where book =?',
+            [book.name],
+            (__tx, res) => {
+              console.log('Book Deleted =>', res.rowsAffected);
+            },
+          );
         },
       );
     });
