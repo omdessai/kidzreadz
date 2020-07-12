@@ -2,6 +2,7 @@ import {openDatabase} from 'react-native-sqlite-storage';
 import {Book} from './book';
 import {Word} from './word';
 import {Books} from './books';
+import {Constants} from '../../constants';
 
 function errorCB(err) {
   console.log('SQL Error: ' + err);
@@ -17,8 +18,6 @@ var db = openDatabase(
   errorCB,
 );
 
-const defaultBook = {name: 'My Word List', icon: 'list'};
-
 class PersistData {
   constructor() {
     db.transaction(function(txn) {
@@ -27,7 +26,7 @@ class PersistData {
           //create default book
           txn.executeSql(
             'INSERT INTO books (book) VALUES (?)',
-            [defaultBook.name],
+            [Constants.DefaultBook.name],
             (_tx, results) => {},
           );
         }
