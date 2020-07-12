@@ -445,6 +445,8 @@ PODS:
     - React-cxxreact (= 0.62.2)
     - React-jsi (= 0.62.2)
     - ReactCommon/callinvoker (= 0.62.2)
+  - RNGestureHandler (1.6.1):
+    - React
   - RNSound (0.11.0):
     - React
     - RNSound/Core (= 0.11.0)
@@ -513,6 +515,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/callinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNSound (from `../node_modules/react-native-sound`)
   - RNTextDetector (from `../node_modules/react-native-text-detector/ios`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -610,6 +613,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNGestureHandler:
+    :path: "../node_modules/react-native-gesture-handler"
   RNSound:
     :path: "../node_modules/react-native-sound"
   RNTextDetector:
@@ -679,6 +684,7 @@ SPEC CHECKSUMS:
   React-RCTText: fae545b10cfdb3d247c36c56f61a94cfd6dba41d
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
+  RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNSound: c980916b596cc15c8dcd2f6ecd3b13c4881dbe20
   RNTextDetector: 3983fcecbd4a95ea4664d3269a62c1b14c3a712b
   RNVectorIcons: da6fe858f5a65d7bbc3379540a889b0b12aa5976

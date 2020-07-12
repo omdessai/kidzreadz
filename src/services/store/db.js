@@ -12,7 +12,7 @@ function okCB() {
 }
 
 var db = openDatabase(
-  {name: 'kr_1.sqlite', createFromLocation: 1},
+  {name: 'kr_v2.sqlite', createFromLocation: 1},
   okCB,
   errorCB,
 );
@@ -32,6 +32,37 @@ class PersistData {
           );
         }
       });
+    });
+  }
+
+  async deleteWord(book, word) {
+    db.transaction(function(tx) {
+      tx.executeSql(
+        'DELETE from bookwords where book =? and word =?',
+        [book.name, word.name],
+        (_tx, results) => {
+          //console.log('BookWords Deleted written =>', results.rowsAffected);
+          tx.executeSql(
+            'DELETE from words where word =?',
+            [word.name],
+            (__tx, res1) => {
+              console.log('words Deleted written =>', res1.rowsAffected);
+            },
+          );
+        },
+      );
+    });
+  }
+
+  async deleteBook(book) {
+    db.transaction(function(tx) {
+      tx.executeSql(
+        'DELETE from books where book =?',
+        [book.name],
+        (_tx, results) => {
+          //console.log('BookWords Deleted written =>', results.rowsAffected);
+        },
+      );
     });
   }
 

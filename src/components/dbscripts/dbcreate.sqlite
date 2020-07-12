@@ -1,0 +1,21 @@
+DROP TABLE bookwords;
+DROP TABLE books;
+DROP TABLE words;
+DROP TABLE preferences;
+
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE books( book TEXT PRIMARY KEY );
+CREATE TABLE preferences( key TEXT PRIMARY KEY, value TEXT );
+CREATE TABLE words( word TEXT PRIMARY KEY, definition TEXT , audio TEXT );
+
+CREATE TABLE bookwords(
+  word TEXT NOT NULL,
+  book TEXT NOT NULL,
+  FOREIGN KEY (word) 
+    REFERENCES words(word)
+    ON DELETE CASCADE
+  FOREIGN KEY (book) 
+    REFERENCES books(book)
+    ON DELETE CASCADE  
+ );
