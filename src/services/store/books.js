@@ -1,6 +1,4 @@
-import {Book} from './book';
-
-const defaultBook = {name: 'My Word List', icon: 'list'};
+import {Constants} from '../../constants';
 
 class Books {
   constructor() {
@@ -23,8 +21,8 @@ class Books {
 
     this.bookList[book.name] = book;
 
-    if (book.name === defaultBook.name) {
-      book.icon = 'list';
+    if (book.name === Constants.DefaultBook.name) {
+      book.icon = Constants.DefaultBook.icon;
       this.bookArray.unshift(book);
     } else {
       this.bookArray.push(book);

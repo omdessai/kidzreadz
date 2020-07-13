@@ -9,7 +9,7 @@ import {
   SafeAreaView,
   Animated,
 } from 'react-native';
-import { RectButton } from "react-native-gesture-handler";
+import {RectButton} from 'react-native-gesture-handler';
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import React, {useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -62,28 +62,30 @@ export default function BookList({store}) {
                   <LinearGradient
                     colors={['ivory', 'lightgrey', 'grey']}
                     style={styles.linearGradient}>
-                    <Ionicons
-                      name={item.icon}
-                      size={30}
-                      style={{marginRight: 10}}
-                      color={
-                        selectedTabName === item.name ? 'darkgreen' : 'olive'
-                      }
-                    />
-                    <Text style={styles.buttonText}>{item.name}</Text>
-                    {selectedTabName !== item.name && (
+                    <View style={{flex: 1}}>
                       <Ionicons
-                        name="chevron-forward-circle-outline"
+                        name={item.icon}
                         size={30}
-                        color={'darkgreen'}
+                        style={{marginRight: 10}}
+                        color={
+                          selectedTabName === item.name ? 'darkgreen' : 'olive'
+                        }
                       />
+                    </View>
+                    <View style={{flex: 1}}>
+                      <Text style={styles.buttonText}>{item.name}</Text>
+                    </View>
+                    {selectedTabName !== item.name && (
+                      <View style={{flex: 1}}>
+                        <Ionicons
+                          name="chevron-forward-circle-outline"
+                          size={30}
+                          color={'darkgreen'}
+                        />
+                      </View>
                     )}
                     {selectedTabName === item.name && (
-                      <Ionicons
-                        name="chevron-down-circle"
-                        size={30}
-                        color={'darkgreen'}
-                      />
+                      <View style={{flex: 1}} />
                     )}
                   </LinearGradient>
                 </View>

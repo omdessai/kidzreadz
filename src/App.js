@@ -122,7 +122,7 @@ const actions = {
 testDb = () => {
   console.log("in test db");
 
-  //db.cleanDb();
+ // db.cleanDb();
   //return;
 
   /*
