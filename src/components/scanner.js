@@ -15,7 +15,7 @@ prevDate = Date.now();
 
 const iconProps = {
   superIcon: {
-    size: 10,
+    size: 15,
     color: '#005773',
   },
   mainIcon: {

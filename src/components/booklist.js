@@ -14,8 +14,10 @@ import Swipeable from "react-native-gesture-handler/Swipeable";
 import React, {useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import WordList from './wordlist'; 
+import {Constants} from '../constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -40,6 +42,26 @@ const styles = StyleSheet.create({
   },
   bookNameHolder: {
     flex: 1,
+  },
+  button: {
+    flex: 1,
+    width: 55,
+  },
+  iconHolders: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 40,
+    backgroundColor: 'green',
+  },
+  superIconContainer: {
+    position: 'absolute',
+    zIndex: 1,
+    opacity: 1,
+  },
+  mainIconContainer: {
+    position: 'absolute',
   },
 });
 
@@ -96,6 +118,26 @@ export default function BookList({store}) {
           keyExtractor={item => item.name}
         />
       </SafeAreaView>
+      <View style={{marginBottom: 5, height: 50}}>
+        <LinearGradient
+          colors={['ivory', 'lightgrey', 'grey']}
+          style={styles.linearGradient}>
+          <View style={{flex: 1, alignItems: 'center'}}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => wordScanClicked()}>
+              <View style={styles.iconHolders}>
+                <View style={styles.superIconContainer}>
+                  <Icon name="plus" size={25} color="darkgreen" />
+                </View>
+                <View style={styles.mainIconContainer}>
+                  <Ionicons name="ios-book" size={40} color="white" />
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </LinearGradient>
+      </View>
     </View>
   );
 }
