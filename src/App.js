@@ -219,13 +219,9 @@ const App: () => React$Node = () => {
           <View style={styles.bodyContainer}>
             <View style={styles.previewContainer}>
               <Scanner
-                onTextSelected={(text, isTitle) => {
+                onTextSelected={text => {
                   console.log('discovered text ' + text);
-                  if (isTitle) {
-                    globalActions.addBook(new Book(text));
-                  } else {
-                    wordDiscovered(text);
-                  }
+                  wordDiscovered(text);
                 }}
                 onCalibrationChanged={mode => {
                   setcalibMode(mode);
