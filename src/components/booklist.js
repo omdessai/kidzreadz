@@ -8,16 +8,20 @@ import {
   FlatList,
   SafeAreaView,
   Animated,
+  TextInput,Dimensions, Keyboard, UIManager
 } from 'react-native';
 import {RectButton} from 'react-native-gesture-handler';
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import React, {useState} from 'react';
+import React, {useState, useEffect } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import WordList from './wordlist'; 
 import {Constants} from '../constants';
+
+
+const { State: TextInputState } = TextInput;
 
 const styles = StyleSheet.create({
   container: {
@@ -60,9 +64,23 @@ const styles = StyleSheet.create({
     zIndex: 1,
     opacity: 1,
   },
+  animContainer: {
+    backgroundColor: 'transparent',
+    flex: 1,
+    height: '100%',
+    justifyContent: 'space-around',
+    left: 0,
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+  },
   mainIconContainer: {
     position: 'absolute',
   },
+  textInput: {
+    backgroundColor: 'white',
+    height: 40,
+  }
 });
 
 export default function BookList({store}) {
@@ -70,6 +88,61 @@ export default function BookList({store}) {
   //console.log("Book data " + JSON.stringify(store));
 
   [selectedTabName, setSelectedTabName] = useState(bookData[0].name);
+  [bookNameEdit, setbookNameEdit] = useState(false);
+  [newBookName, setnewBookName] = useState('');
+  [shift, setshift] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    this.keyboardDidShowSub = Keyboard.addListener(
+      'keyboardDidShow',
+      handleKeyboardDidShow,
+    );
+    this.keyboardDidHideSub = Keyboard.addListener(
+      'keyboardDidHide',
+      handleKeyboardDidHide,
+    );
+ 
+    return function cleanup() {
+      keyboardDidShowSub.remove();
+      keyboardDidHideSub.remove();
+    };
+  });
+
+
+
+  handleKeyboardDidShow = (event) => {
+    const { height: windowHeight } = Dimensions.get('window');
+    const keyboardHeight = event.endCoordinates.height;
+    const currentlyFocusedField = TextInputState.currentlyFocusedField();
+    UIManager.measure(currentlyFocusedField, (originX, originY, width, height, pageX, pageY) => {
+      const fieldHeight = height;
+      const fieldTop = pageY;
+      const gap = (windowHeight - keyboardHeight) - (fieldTop + fieldHeight);
+      if (gap >= 0) {
+        return;
+      }
+      Animated.timing(
+        shift,
+        {
+          toValue: gap,
+          duration: 200,
+          useNativeDriver: true,
+        }
+      ).start();
+    });
+  }
+
+  handleKeyboardDidHide = () => {
+    Animated.timing(
+      shift,
+      {
+        toValue: 0,
+        duration: 100,
+        useNativeDriver: true,
+      }
+    ).start();
+  }
+
 
   return (
     <View style={{flex: 1}}>
@@ -118,14 +191,22 @@ export default function BookList({store}) {
           keyExtractor={item => item.name}
         />
       </SafeAreaView>
+
+
+
+
       <View style={{marginBottom: 5, height: 50}}>
-        <LinearGradient
+
+
+      <LinearGradient
           colors={['ivory', 'lightgrey', 'grey']}
           style={styles.linearGradient}>
           <View style={{flex: 1, alignItems: 'center'}}>
+
+            {!bookNameEdit &&
             <TouchableOpacity
               style={styles.button}
-              onPress={() => wordScanClicked()}>
+              onPress={() => setbookNameEdit(true)}>
               <View style={styles.iconHolders}>
                 <View style={styles.superIconContainer}>
                   <Icon name="plus" size={25} color="darkgreen" />
@@ -134,10 +215,35 @@ export default function BookList({store}) {
                   <Ionicons name="ios-book" size={40} color="white" />
                 </View>
               </View>
-            </TouchableOpacity>
-          </View>
-        </LinearGradient>
-      </View>
+            </TouchableOpacity>}
+
+{
+    bookNameEdit && 
+    <Animated.View style={[styles.animContainer, { transform: [{translateY: shift}] }]}>
+<TextInput
+          placeholder="Type Book Name!"
+          style={styles.textInput}
+          autoFocus = {true}
+        onSubmitEditing={text => 
+          {
+            setnewBookName(text);
+            setbookNameEdit(false);
+        }}
+
+        />
+</Animated.View>
+  }
+
+
+
+      
+      
+
+</View>
+</LinearGradient>
+
+</View>
+
     </View>
   );
 }
