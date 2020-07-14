@@ -78,8 +78,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   textInput: {
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     height: 40,
+    marginHorizontal:10,
+    color:'black',
+    fontWeight:'bold'
   }
 });
 
@@ -196,7 +199,7 @@ export default function BookList({store}) {
 
 
       <View style={{marginBottom: 5, height: 50}}>
-
+      <Animated.View style={[styles.animContainer, { transform: [{translateY: shift}] }]}>
 
       <LinearGradient
           colors={['ivory', 'lightgrey', 'grey']}
@@ -219,8 +222,8 @@ export default function BookList({store}) {
 
 {
     bookNameEdit && 
-    <Animated.View style={[styles.animContainer, { transform: [{translateY: shift}] }]}>
-<TextInput
+    <View style={{flex:1, borderRadius:20, borderWidth:1, backgroundColor:'white'}}>
+      <TextInput
           placeholder="Type Book Name!"
           style={styles.textInput}
           autoFocus = {true}
@@ -231,7 +234,8 @@ export default function BookList({store}) {
         }}
 
         />
-</Animated.View>
+    </View>
+
   }
 
 
@@ -241,6 +245,7 @@ export default function BookList({store}) {
 
 </View>
 </LinearGradient>
+</Animated.View>
 
 </View>
 
