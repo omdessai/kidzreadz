@@ -82,7 +82,8 @@ const styles = StyleSheet.create({
     height: 40,
     marginHorizontal:10,
     color:'black',
-    fontWeight:'bold'
+    fontWeight:'bold',
+    textAlign:'center',
   }
 });
 
@@ -198,15 +199,16 @@ export default function BookList({store}) {
 
 
 
-      <View style={{marginBottom: 5, height: 50}}>
+      <View style={{marginBottom: 5, height: 50,}}>
       <Animated.View style={[styles.animContainer, { transform: [{translateY: shift}] }]}>
 
       <LinearGradient
-          colors={['ivory', 'lightgrey', 'grey']}
+          colors={['green', 'lightgreen', 'olive']}
           style={styles.linearGradient}>
-          <View style={{flex: 1, alignItems: 'center'}}>
+          <View style={{flex: 1}}>
 
             {!bookNameEdit &&
+            <View style={{flex: 1, alignItems:'center'}}>
             <TouchableOpacity
               style={styles.button}
               onPress={() => setbookNameEdit(true)}>
@@ -218,7 +220,9 @@ export default function BookList({store}) {
                   <Ionicons name="ios-book" size={40} color="white" />
                 </View>
               </View>
-            </TouchableOpacity>}
+            </TouchableOpacity>
+            </View>
+            }
 
 {
     bookNameEdit && 
@@ -246,7 +250,6 @@ export default function BookList({store}) {
 </View>
 </LinearGradient>
 </Animated.View>
-
 </View>
 
     </View>
