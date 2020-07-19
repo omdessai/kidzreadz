@@ -266,9 +266,6 @@ const App: () => React$Node = () => {
           </View>
         )}
       </View>
-      <View style={styles.footer}>
-        <Text style={styles.footerTitle}>ZeroGravity Kidz</Text>
-      </View>
     </View>
   );
 };
