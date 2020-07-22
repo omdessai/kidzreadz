@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import WordList from './wordlist'; 
 import {Constants} from '../constants';
+import { Book } from '../services/store/book';
 
 
 const { State: TextInputState } = TextInput;
@@ -87,13 +88,13 @@ const styles = StyleSheet.create({
   }
 });
 
-export default function BookList({store}) {
+export default function BookList({store, actions}) {
   bookData = store.books.array();
-  //console.log("Book data " + JSON.stringify(store));
+  console.log("Book data " + JSON.stringify(bookData));
 
   [selectedTabName, setSelectedTabName] = useState(bookData[0].name);
   [bookNameEdit, setbookNameEdit] = useState(false);
-  [newBookName, setnewBookName] = useState('');
+  //[newBookName, setnewBookName] = useState('');
   [shift, setshift] = useState(new Animated.Value(0));
 
   useEffect(() => {
@@ -129,7 +130,7 @@ export default function BookList({store}) {
         shift,
         {
           toValue: gap,
-          duration: 200,
+          duration: 0,
           useNativeDriver: true,
         }
       ).start();
@@ -141,10 +142,11 @@ export default function BookList({store}) {
       shift,
       {
         toValue: 0,
-        duration: 100,
+        duration: 50,
         useNativeDriver: true,
       }
     ).start();
+    setbookNameEdit(false);
   }
 
 
@@ -197,13 +199,11 @@ export default function BookList({store}) {
       </SafeAreaView>
 
 
-
-
       <View style={{marginBottom: 5, height: 50,}}>
       <Animated.View style={[styles.animContainer, { transform: [{translateY: shift}] }]}>
 
       <LinearGradient
-          colors={['green', 'lightgreen', 'olive']}
+          colors={['olive', 'lightgreen']}
           style={styles.linearGradient}>
           <View style={{flex: 1}}>
 
@@ -233,7 +233,8 @@ export default function BookList({store}) {
           autoFocus = {true}
         onSubmitEditing={text => 
           {
-            setnewBookName(text);
+            //setnewBookName(text);
+            actions.addBook(new Book(text));
             setbookNameEdit(false);
         }}
 

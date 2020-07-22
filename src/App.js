@@ -239,7 +239,7 @@ const App: () => React$Node = () => {
             </View>
             {!calibMode && (
               <View style={styles.wordListContainer}>
-                <BookList store={globalState} />
+                <BookList store={globalState} actions={globalActions}/>
               </View>
             )}
             {calibMode && (
