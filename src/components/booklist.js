@@ -197,62 +197,6 @@ export default function BookList({store, actions}) {
           keyExtractor={item => item.name}
         />
       </SafeAreaView>
-
-
-      <View style={{marginBottom: 5, height: 50,}}>
-      <Animated.View style={[styles.animContainer, { transform: [{translateY: shift}] }]}>
-
-      <LinearGradient
-          colors={['olive', 'lightgreen']}
-          style={styles.linearGradient}>
-          <View style={{flex: 1}}>
-
-            {!bookNameEdit &&
-            <View style={{flex: 1, alignItems:'center'}}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => setbookNameEdit(true)}>
-              <View style={styles.iconHolders}>
-                <View style={styles.superIconContainer}>
-                  <Icon name="plus" size={25} color="darkgreen" />
-                </View>
-                <View style={styles.mainIconContainer}>
-                  <Ionicons name="ios-book" size={40} color="white" />
-                </View>
-              </View>
-            </TouchableOpacity>
-            </View>
-            }
-
-{
-    bookNameEdit && 
-    <View style={{flex:1, borderRadius:20, borderWidth:1, backgroundColor:'white'}}>
-      <TextInput
-          placeholder="Type Book Name!"
-          style={styles.textInput}
-          autoFocus = {true}
-        onSubmitEditing={text => 
-          {
-            //setnewBookName(text);
-            actions.addBook(new Book(text));
-            setbookNameEdit(false);
-        }}
-
-        />
-    </View>
-
-  }
-
-
-
-      
-      
-
-</View>
-</LinearGradient>
-</Animated.View>
-</View>
-
     </View>
   );
 }
