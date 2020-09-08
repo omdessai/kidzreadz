@@ -38,11 +38,9 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Do you want KidzReadz to access the camera</string>
+	<string>This app needs access to camera to scan words. Do you want KidzReadz to access the camera?</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Check Audio Permissions</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

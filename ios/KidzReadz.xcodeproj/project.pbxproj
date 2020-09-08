@@ -761,7 +761,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.zerogravitykidz.Kidz.Readz;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zerogravitykidz.kidz.readz;
 				PRODUCT_NAME = KidzReadz;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -785,7 +785,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.zerogravitykidz.Kidz.Readz;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zerogravitykidz.kidz.readz;
 				PRODUCT_NAME = KidzReadz;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
