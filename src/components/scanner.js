@@ -249,6 +249,7 @@ function PreviewOn({
         }}
         style={styles.preview}
         type={RNCamera.Constants.Type.back}
+        captureAudio={false}
         flashMode={RNCamera.Constants.FlashMode.off}
         onTextRecognized={blocks => {
           this.onTextRecognized(blocks);
