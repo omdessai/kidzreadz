@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "371587761709",
+    "project_id": "kidzreadz-8f25c",
+    "storage_bucket": "kidzreadz-8f25c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:371587761709:android:a22c8df792a46708371aa4",
+        "android_client_info": {
+          "package_name": "com.kidzreadz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "371587761709-i0u3ke7e0tqimvgrpork6cttari59d8v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD0gYHHG5e-o_jNIWtUVy8OWSi8d0Up7o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "371587761709-i0u3ke7e0tqimvgrpork6cttari59d8v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "371587761709-q3log3fbh0ac3ke3sb92i6n0mhbv4i55.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.zerogravitykidz.kidz.readz",
+                "app_store_id": "1530864137"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

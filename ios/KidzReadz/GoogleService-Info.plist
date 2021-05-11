@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>527762745562-1cjf6c0le4m9u68ckqu8quhc8ld3cdk2.apps.googleusercontent.com</string>
+	<string>371587761709-q3log3fbh0ac3ke3sb92i6n0mhbv4i55.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.527762745562-1cjf6c0le4m9u68ckqu8quhc8ld3cdk2</string>
+	<string>com.googleusercontent.apps.371587761709-q3log3fbh0ac3ke3sb92i6n0mhbv4i55</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAiDtHrE8syHethUYrwbTPxkcegkYcXu6E</string>
+	<string>AIzaSyDumnNcmTX2u4NqjYMF_kdSV2_jgzJQbAc</string>
 	<key>GCM_SENDER_ID</key>
-	<string>527762745562</string>
+	<string>371587761709</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.zerogravitykidz.kidzreadz</string>
+	<string>com.zerogravitykidz.kidz.readz</string>
 	<key>PROJECT_ID</key>
-	<string>kidzreadz</string>
+	<string>kidzreadz-8f25c</string>
 	<key>STORAGE_BUCKET</key>
-	<string>kidzreadz.appspot.com</string>
+	<string>kidzreadz-8f25c.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:527762745562:ios:c42e83ab433c0a42609de3</string>
-	<key>DATABASE_URL</key>
-	<string>https://kidzreadz.firebaseio.com</string>
+	<string>1:371587761709:ios:01cf07c04c3c43a2371aa4</string>
 </dict>
 </plist>

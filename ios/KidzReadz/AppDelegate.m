@@ -3,7 +3,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-
+#import <MarketingCloudSDK/MarketingCloudSDK.h>
 #import <Firebase.h> 
 
 #if DEBUG
@@ -34,6 +34,8 @@ static void InitializeFlipper(UIApplication *application) {
 #endif
   [FIRApp configure];
   
+  
+  
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"KidzReadz"
@@ -46,6 +48,41 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  MarketingCloudSDKConfigBuilder *mcsdkBuilder = [MarketingCloudSDKConfigBuilder new];
+      [mcsdkBuilder sfmc_setApplicationId:@"e7226164-6340-4660-9964-97641dcc9578"];
+      [mcsdkBuilder sfmc_setAccessToken:@"cbGTACDuFgOzNTGGSHAXfBOo"];
+      [mcsdkBuilder sfmc_setAnalyticsEnabled:@(YES)];
+      [mcsdkBuilder sfmc_setMarketingCloudServerUrl:@"https://mc3g-whh0zyq0nkwpmgbnlj3m46m.device.marketingcloudapis.com/"];
+
+      NSError *error = nil;
+      BOOL success =
+          [[MarketingCloudSDK sharedInstance] sfmc_configureWithDictionary:[mcsdkBuilder sfmc_build]
+                                                                     error:&error];
+      if(success != YES){
+        os_log_debug(OS_LOG_DEFAULT, "Failed to register marketing cloud = %@", error);
+      } else {
+        os_log_debug(OS_LOG_DEFAULT, "Marketing cloud registered");
+      }
+  // set the UNUserNotificationCenter delegate - the delegate must be set here in
+               // didFinishLaunchingWithOptions
+       [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+       [[UIApplication sharedApplication] registerForRemoteNotifications];
+
+       [[UNUserNotificationCenter currentNotificationCenter]
+           requestAuthorizationWithOptions:UNAuthorizationOptionAlert |
+                                           UNAuthorizationOptionSound |
+                                           UNAuthorizationOptionBadge
+                         completionHandler:^(BOOL granted, NSError *_Nullable error) {
+                           if (error == nil) {
+                               if (granted == YES) {
+                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                                  });
+                               }
+                           }
+                         }];
+
+  
   return YES;
 }
 
@@ -58,4 +95,49 @@ static void InitializeFlipper(UIApplication *application) {
 #endif
 }
 
+
+- (void)application:(UIApplication *)application
+    didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    [[MarketingCloudSDK sharedInstance] sfmc_setDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application
+    didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    os_log_debug(OS_LOG_DEFAULT, "didFailToRegisterForRemoteNotificationsWithError = %@", error);
+}
+
+// The method will be called on the delegate when the user responded to the notification by opening
+// the application, dismissing the notification or choosing a UNNotificationAction. The delegate
+// must be set before the application returns from applicationDidFinishLaunching:.
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+    didReceiveNotificationResponse:(UNNotificationResponse *)response
+             withCompletionHandler:(void (^)(void))completionHandler {
+    // tell the MarketingCloudSDK about the notification
+    [[MarketingCloudSDK sharedInstance] sfmc_setNotificationRequest:response.notification.request];
+  os_log_debug(OS_LOG_DEFAULT, "didReceiveNotificationResponse");
+    if (completionHandler != nil) {
+        completionHandler();
+    }
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+       willPresentNotification:(UNNotification *)notification
+         withCompletionHandler:
+             (void (^)(UNNotificationPresentationOptions options))completionHandler {
+    NSLog(@"User Info : %@", notification.request.content.userInfo);
+  os_log_debug(OS_LOG_DEFAULT, "willPresentNotification");
+    completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert |
+                      UNAuthorizationOptionBadge);
+}
+
+// This method is REQUIRED for correct functionality of the SDK.
+// This method will be called on the delegate when the application receives a silent push
+
+- (void)application:(UIApplication *)application
+    didReceiveRemoteNotification:(NSDictionary *)userInfo
+          fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    [[MarketingCloudSDK sharedInstance] sfmc_setNotificationUserInfo:userInfo];
+  os_log_debug(OS_LOG_DEFAULT, "didReceiveRemoteNotification");
+    completionHandler(UIBackgroundFetchResultNewData);
+}
 @end

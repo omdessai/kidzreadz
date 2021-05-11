@@ -10,6 +10,10 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import android.util.Log;
+import com.salesforce.marketingcloud.MarketingCloudConfig;
+import com.salesforce.marketingcloud.MarketingCloudSdk;
+import com.salesforce.marketingcloud.notifications.NotificationCustomizationOptions;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -44,6 +48,16 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    MarketingCloudSdk.init(this,
+                MarketingCloudConfig.builder()
+                        .setApplicationId("e7226164-6340-4660-9964-97641dcc9578")
+                        .setAccessToken("cbGTACDuFgOzNTGGSHAXfBOo")
+                        .setSenderId("371587761709")
+                        .setMarketingCloudServerUrl("https://mc3g-whh0zyq0nkwpmgbnlj3m46m.device.marketingcloudapis.com/")
+                        .setNotificationCustomizationOptions(NotificationCustomizationOptions.create(1))
+                        .setAnalyticsEnabled(true)
+                        .build(this),
+                initializationStatus -> Log.e("INIT", initializationStatus.toString()));
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
 
