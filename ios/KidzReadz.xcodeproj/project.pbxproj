@@ -8,13 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* KidzReadzTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* KidzReadzTests.m */; };
-		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* KidzReadzTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* KidzReadzTests.m */; };
 		30116AEB24A9452400806909 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 30116AEA24A9452400806909 /* GoogleService-Info.plist */; };
 		30116AF124A9814300806909 /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 30116AF024A9814300806909 /* tessdata */; };
@@ -23,6 +19,8 @@
 		73A80346DEB911CD7A7C39BF /* libPods-KidzReadz-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CB492AC7CDF21603583781C /* libPods-KidzReadz-tvOS.a */; };
 		C7D1D87E5733BB75B785A0A4 /* libPods-KidzReadz-KidzReadzTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3887F59C4A0197E0955E03 /* libPods-KidzReadz-KidzReadzTests.a */; };
 		CA68E7966341861D2CDDB646 /* libPods-KidzReadz-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5498EBC353A148311CE828A6 /* libPods-KidzReadz-tvOSTests.a */; };
+		FBF92ABA264B2C2A00B57BBF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF92AB9264B2C2A00B57BBF /* AppDelegate.swift */; };
+		FBF92ABB264B2C2A00B57BBF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF92AB9264B2C2A00B57BBF /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,12 +48,9 @@
 		0CB492AC7CDF21603583781C /* libPods-KidzReadz-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KidzReadz-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E0A1112AE2AD1C98DEDDDDA /* Pods-KidzReadz-KidzReadzTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KidzReadz-KidzReadzTests.release.xcconfig"; path = "Target Support Files/Pods-KidzReadz-KidzReadzTests/Pods-KidzReadz-KidzReadzTests.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* KidzReadz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KidzReadz.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = KidzReadz/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = KidzReadz/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = KidzReadz/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = KidzReadz/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = KidzReadz/main.m; sourceTree = "<group>"; };
 		1CA59BC7BBEB62B6DC7E57CA /* Pods-KidzReadz-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KidzReadz-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-KidzReadz-tvOS/Pods-KidzReadz-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* KidzReadz-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KidzReadz-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* KidzReadz-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KidzReadz-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,6 +69,9 @@
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		FB9AD3CA463584DA07170D0B /* Pods-KidzReadz-KidzReadzTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KidzReadz-KidzReadzTests.debug.xcconfig"; path = "Target Support Files/Pods-KidzReadz-KidzReadzTests/Pods-KidzReadz-KidzReadzTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FBF92AA9264A2F6700B57BBF /* KidzReadz.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = KidzReadz.entitlements; path = KidzReadz/KidzReadz.entitlements; sourceTree = "<group>"; };
+		FBF92AB7264B2C2A00B57BBF /* KidzReadz-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KidzReadz-Bridging-Header.h"; sourceTree = "<group>"; };
+		FBF92AB8264B2C2A00B57BBF /* KidzReadz-tvOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KidzReadz-tvOS-Bridging-Header.h"; sourceTree = "<group>"; };
+		FBF92AB9264B2C2A00B57BBF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,12 +135,12 @@
 				30116AF024A9814300806909 /* tessdata */,
 				30116AEA24A9452400806909 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
-				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
-				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
-				13B07FB71A68108700A75B9A /* main.m */,
+				FBF92AB9264B2C2A00B57BBF /* AppDelegate.swift */,
+				FBF92AB7264B2C2A00B57BBF /* KidzReadz-Bridging-Header.h */,
+				FBF92AB8264B2C2A00B57BBF /* KidzReadz-tvOS-Bridging-Header.h */,
 			);
 			name = KidzReadz;
 			sourceTree = "<group>";
@@ -307,10 +305,11 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = FB9984QKS3;
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1250;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
+						LastSwiftMigration = 1250;
 						ProvisioningStyle = Automatic;
 					};
 					2D02E48F1E0B4A5D006451C7 = {
@@ -692,8 +691,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				FBF92ABA264B2C2A00B57BBF /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -701,8 +699,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */,
-				2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */,
+				FBF92ABB264B2C2A00B57BBF /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -746,6 +743,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FB9AD3CA463584DA07170D0B /* Pods-KidzReadz-KidzReadzTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -769,6 +767,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0E0A1112AE2AD1C98DEDDDDA /* Pods-KidzReadz-KidzReadzTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = KidzReadzTests/Info.plist;
@@ -809,6 +808,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zerogravitykidz.kidz.readz;
 				PRODUCT_NAME = KidzReadz;
+				SWIFT_OBJC_BRIDGING_HEADER = "KidzReadz-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -835,6 +835,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zerogravitykidz.kidz.readz;
 				PRODUCT_NAME = KidzReadz;
+				SWIFT_OBJC_BRIDGING_HEADER = "KidzReadz-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -847,6 +848,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -863,6 +865,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.KidzReadz-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				SWIFT_OBJC_BRIDGING_HEADER = "KidzReadz-tvOS-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.2;
 			};
@@ -875,6 +880,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -891,6 +897,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.KidzReadz-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				SWIFT_OBJC_BRIDGING_HEADER = "KidzReadz-tvOS-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.2;
 			};
@@ -900,6 +908,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A3DE704BD886F8FC7885DE55 /* Pods-KidzReadz-tvOSTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -927,6 +936,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D27679DAA8F916FBCE870442 /* Pods-KidzReadz-tvOSTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
