@@ -53,8 +53,9 @@ public class MainApplication extends Application implements ReactApplication {
                         .setApplicationId("e7226164-6340-4660-9964-97641dcc9578")
                         .setAccessToken("cbGTACDuFgOzNTGGSHAXfBOo")
                         .setSenderId("371587761709")
+                        .setMid("10973840")
                         .setMarketingCloudServerUrl("https://mc3g-whh0zyq0nkwpmgbnlj3m46m.device.marketingcloudapis.com/")
-                        .setNotificationCustomizationOptions(NotificationCustomizationOptions.create(1))
+                        .setNotificationCustomizationOptions(NotificationCustomizationOptions.create(R.drawable.ic_notification))
                         .setAnalyticsEnabled(true)
                         .build(this),
                 initializationStatus -> Log.e("INIT", initializationStatus.toString()));
